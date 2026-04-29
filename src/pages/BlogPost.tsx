@@ -65,7 +65,7 @@ export default function BlogPost() {
       tag: "Tech & Finance",
       duration: "5 min read",
       intro: "Digital tax filing systems are transforming compliance across SMEs and freelancers in Nigeria, reducing wait times and middleman fees.",
-      content: "For decades, filing taxes in Nigeria meant wrestling with paperwork and navigating bureaucratic hurdles. Today, innovations from the FIRS and State Revenue Services are digitizing the entire process. Tools like TaxPro Max and integrated tax software are enabling businesses to file returns and obtain Tax Clearance Certificates (TCC) from their smartphones."
+      content: "For decades, filing taxes in Nigeria meant wrestling with paperwork and navigating bureaucratic hurdles. Today, innovations from the NRS and State Revenue Services are digitizing the entire process. Tools like TaxPro Max and integrated tax software are enabling businesses to file returns and obtain Tax Clearance Certificates (TCC) from their smartphones."
     },
     "what-is-tin": {
       title: "Wetin be TIN and Why You Need Am?",

@@ -42,7 +42,7 @@ export function NigeriaTaxLayer() {
             <ul className="space-y-5">
               {[
                 "Comparative Presumptive Tax rates across States",
-                "FIRS vs State IRS jurisdictional clarity",
+                "NRS vs State IRS jurisdictional clarity",
                 "Local Government levies tracking"
               ].map((item, i) => (
                 <li key={i} className="flex items-center text-slate-200 font-medium text-lg">

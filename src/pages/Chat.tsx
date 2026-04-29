@@ -341,7 +341,7 @@ CRITICAL FORMATTING RULES:
 3. Use clear bullet points (-) or numbered lists (1. 2.) to break down steps.
 4. Keep paragraphs short and highly readable.
 5. Use ### Headings when shifting to a new major point.
-6. INCLUDE RELEVANT LINKS: Add relevant actionable links affiliated with the NRS (Nigeria Revenue Service) or FIRS (e.g., https://taxpromax.firs.gov.ng or https://www.firs.gov.ng) in your replies to make them very trustworthy and smart. Provide context on where to click.
+6. INCLUDE RELEVANT LINKS: Add relevant actionable links affiliated with the NRS (Nigeria Revenue Service) (e.g., https://taxpromax.nrs.gov.ng or https://www.nrs.gov.ng) in your replies to make them very trustworthy and smart. Provide context on where to click.
 
 CRITICAL REGIONAL ADAPTATION & AUTO-TRANSLATION:
 1. The user's active UI interface language is currently set to ${language}, use ${language} to structure your response.
