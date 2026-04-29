@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper Functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Validation for User Entity
+    function isValidUser(data, userId) {
+      return 
+        data.keys().hasAll(['fullName', 'email', 'createdAt']) &&
+        data.fullName is string && data.fullName.size() > 0 && data.fullName.size() <= 100 &&
+        data.email is string && data.email.size() > 0 && data.email.size() <= 100 &&
+        (data.get('phone', '') is string && data.get('phone', '').size() <= 20) &&
+        data.createdAt == request.time;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow get: if isSignedIn() && isOwner(userId);
+      // No blanket list allowed for users to protect PII
+      
+      allow create: if 
+        isSignedIn() && 
+        isOwner(userId) && 
+        isValidId(userId) &&
+        isValidUser(incoming(), userId);
+        
+      allow update: if
+        isSignedIn() &&
+        isOwner(userId) &&
+        isValidId(userId) &&
+        incoming().diff(existing()).affectedKeys().hasOnly(['fullName', 'phone']) &&
+        incoming().fullName is string && incoming().fullName.size() > 0 && incoming().fullName.size() <= 100 &&
+        (incoming().get('phone', '') is string && incoming().get('phone', '').size() <= 20);
+    }
+  }
+}
