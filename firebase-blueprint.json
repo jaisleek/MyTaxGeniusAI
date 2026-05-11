@@ -1,0 +1,93 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "fullName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "taxId": {
+          "type": "string",
+          "description": "Tax Identification Number"
+        },
+        "profilePicture": {
+          "type": "string",
+          "description": "Base64 encoded profile image"
+        },
+        "signature": {
+          "type": "string",
+          "description": "Base64 encoded signature image"
+        },
+        "address": {
+          "type": "string"
+        },
+        "businessName": {
+          "type": "string"
+        },
+        "onboardingComplete": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["fullName", "email", "createdAt"]
+    },
+    "ReminderSubscription": {
+      "title": "Reminder Subscription",
+      "description": "Email addresses subscribed for tax deadlines",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["email", "createdAt"]
+    },
+    "DashboardAlertSubscription": {
+      "title": "Dashboard Alert Subscription",
+      "description": "Email addresses subscribed for security alerts on the dashboard",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "alertEmail": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "alertEmail", "createdAt"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles indexed by their authentication UID"
+    },
+    "reminderSubscriptions/{subscriptionId}": {
+      "schema": "ReminderSubscription",
+      "description": "Emails subscribed to tax reminders"
+    },
+    "dashboardAlertSubscriptions/{subscriptionId}": {
+      "schema": "DashboardAlertSubscription",
+      "description": "Emails subscribed to security alerts on the dashboard"
+    }
+  }
+}
