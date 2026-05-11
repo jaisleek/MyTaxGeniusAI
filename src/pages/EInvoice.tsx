@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Receipt, Plus, Download, Send, CheckCircle, Shield } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Receipt, Plus, Download, Send, CheckCircle, Shield, WifiOff, Save } from 'lucide-react';
 
 interface InvoiceItem {
   id: string;
@@ -8,11 +8,47 @@ interface InvoiceItem {
   price: number;
 }
 
+const STORAGE_KEY = 'mytaxgenius_einvoice_draft';
+
 export default function EInvoice() {
   const [items, setItems] = useState<InvoiceItem[]>([{ id: '1', description: '', quantity: 1, price: 0 }]);
   const [customerName, setCustomerName] = useState('');
   const [customerEmail, setCustomerEmail] = useState('');
   const [isGenerated, setIsGenerated] = useState(false);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const [savedAt, setSavedAt] = useState<Date | null>(null);
+
+  // Load from local storage
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.items) setItems(parsed.items);
+        if (parsed.customerName) setCustomerName(parsed.customerName);
+        if (parsed.customerEmail) setCustomerEmail(parsed.customerEmail);
+      } catch (e) {
+        console.error("Failed to load invoice draft", e);
+      }
+    }
+
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    }
+  }, []);
+
+  // Save to local storage automatically
+  useEffect(() => {
+    const state = { items, customerName, customerEmail };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    setSavedAt(new Date());
+  }, [items, customerName, customerEmail]);
 
   const addItem = () => {
     setItems([...items, { id: Date.now().toString(), description: '', quantity: 1, price: 0 }]);
@@ -41,11 +77,26 @@ export default function EInvoice() {
           Create professional invoices that automatically calculate the mandatory 7.5% VAT. 
           Keep your business compliant without the hassle.
         </p>
+
+        {isOffline && (
+          <div className="mt-4 inline-flex items-center bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-sm font-bold">
+            <WifiOff className="w-4 h-4 mr-2" /> You are offline. Invoices are saved as drafts.
+          </div>
+        )}
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
         {/* Invoice Builder */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-200 dark:border-slate-800 transition-colors duration-300">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-gray-200 dark:border-slate-800 transition-colors duration-300 relative">
+          
+          <div className="absolute top-6 right-6 text-xs text-gray-400 flex items-center">
+            {savedAt && (
+              <>
+                <Save className="w-3 h-3 mr-1" /> Draft saved
+              </>
+            )}
+          </div>
+
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 border-b border-gray-100 dark:border-slate-800 pb-4">Invoice Details</h2>
           
           <div className="space-y-4 mb-6">

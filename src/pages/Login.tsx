@@ -23,12 +23,18 @@ export default function Login() {
   React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const userDocRef = doc(db, 'users', user.uid);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists() && userDoc.data().role === 'accountant') {
-          navigate('/accountant-portal');
-        } else {
-          navigate('/dashboard');
+        try {
+          const userDocRef = doc(db, 'users', user.uid);
+          const userDoc = await getDoc(userDocRef);
+          if (userDoc.exists() && userDoc.data().role === 'accountant') {
+            navigate('/accountant-portal');
+          } else {
+            navigate('/dashboard');
+          }
+        } catch (err) {
+          console.error("Auth state check error:", err);
+          setError("We couldn't verify your account right now, please try again.");
+          await auth.signOut();
         }
       }
     });
@@ -67,12 +73,18 @@ export default function Login() {
         return;
       }
 
-      const userDocRef = doc(db, 'users', userCredential.user.uid);
-      const userDoc = await getDoc(userDocRef);
-      if (userDoc.exists() && userDoc.data().role === 'accountant') {
-        navigate('/accountant-portal');
-      } else {
-        navigate('/dashboard');
+      try {
+        const userDocRef = doc(db, 'users', userCredential.user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists() && userDoc.data().role === 'accountant') {
+          navigate('/accountant-portal');
+        } else {
+          navigate('/dashboard');
+        }
+      } catch (docErr) {
+        console.error("Error fetching user role:", docErr);
+        await auth.signOut();
+        setError("We couldn't verify your account right now. This might be due to a poor network connection. Please try again.");
       }
     } catch (err: any) {
       console.error("Login error:", err);
@@ -116,12 +128,18 @@ export default function Login() {
     try {
       const userCredential = await signInWithPopup(auth, googleProvider);
       
-      const userDocRef = doc(db, 'users', userCredential.user.uid);
-      const userDoc = await getDoc(userDocRef);
-      if (userDoc.exists() && userDoc.data().role === 'accountant') {
-        navigate('/accountant-portal');
-      } else {
-        navigate('/dashboard');
+      try {
+        const userDocRef = doc(db, 'users', userCredential.user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists() && userDoc.data().role === 'accountant') {
+          navigate('/accountant-portal');
+        } else {
+          navigate('/dashboard');
+        }
+      } catch (docErr) {
+        console.error("Error fetching user role during Google Login:", docErr);
+        await auth.signOut();
+        setError("We couldn't verify your account right now. This might be due to a poor network connection. Please try again.");
       }
     } catch (err: any) {
       console.error("Google login error:", err);

@@ -422,6 +422,46 @@ export default function Settings() {
               </div>
             </div>
 
+            {/* Automated Data Export */}
+            <div className="bg-white rounded-3xl p-6 lg:p-8 shadow-sm border border-slate-200 space-y-6">
+              <h3 className="font-bold text-slate-900 border-b border-slate-100 pb-4 text-lg flex items-center">
+                <span>Data Backup & Export</span>
+              </h3>
+              <p className="text-sm text-slate-500 font-medium">Download a complete copy of your profile data to avoid vendor lock-in. Keep control of your business information.</p>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button type="button" onClick={() => {
+                  const data = JSON.stringify(formData, null, 2);
+                  const blob = new Blob([data], { type: 'application/json' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `mytaxgenius_export_${new Date().toISOString().split('T')[0]}.json`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }} className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl transition-colors whitespace-nowrap">
+                  Export JSON
+                </button>
+                <button type="button" onClick={() => {
+                  const csvRows = [];
+                  csvRows.push(['Field', 'Value']);
+                  Object.entries(formData).forEach(([key, val]) => {
+                    csvRows.push([key, `"${val}"`]);
+                  });
+                  const csvStr = csvRows.map(r => r.join(',')).join('\n');
+                  const blob = new Blob([csvStr], { type: 'text/csv' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `mytaxgenius_export_${new Date().toISOString().split('T')[0]}.csv`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }} className="px-6 py-3 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold rounded-xl transition-colors whitespace-nowrap">
+                  Export CSV
+                </button>
+              </div>
+            </div>
+
             {/* Signature Area */}
             <div className="bg-white rounded-3xl p-6 lg:p-8 shadow-sm border border-slate-200 space-y-6">
               <h3 className="font-bold text-slate-900 border-b border-slate-100 pb-4 text-lg">Digital Signature</h3>
