@@ -59,7 +59,7 @@ async function startServer() {
       }
 
       const stream = await groqClient.chat.completions.create({
-        messages: messages,
+        messages: messages as any,
         model: "llama-3.3-70b-versatile",
         temperature: 0.7,
         max_tokens: 2048,
