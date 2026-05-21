@@ -1,12 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { jsPDF } from 'jspdf';
-import { Camera, Upload, Plus, FileText, Receipt, PieChart as PieChartIcon, TrendingUp, Search, Download, Trash2, CheckCircle2, AlertCircle, X, Share2 } from 'lucide-react';
+import { Camera, Upload, Plus, FileText, Receipt, PieChart as PieChartIcon, TrendingUp, Search, Download, CheckCircle2, AlertCircle, X, Share2 } from 'lucide-react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend 
 } from 'recharts';
-import { Logo } from '../components/Logo';
 import { Link } from 'react-router-dom';
 
 export default function Expenses() {
@@ -77,6 +76,25 @@ export default function Expenses() {
       amount: acc[key]
     })).reverse(); // simple reverse to keep recent at end if input is newest first
   }, [expenses]);
+
+  const handleStatusChange = (id: number, newStatus: string) => {
+    const updatedExpenses = expenses.map((exp: any) => 
+      exp.id === id ? { ...exp, status: newStatus } : exp
+    );
+    setExpenses(updatedExpenses);
+  };
+
+  const getTooltipContent = (category: string) => {
+    switch(category) {
+      case 'Travel': return 'Usually deductible if wholly and exclusively for business (e.g., flight to meet a client).';
+      case 'Meals & Ent.': return 'Often partially or non-deductible unless directly related to client meetings.';
+      case 'Office Supplies': return 'Generally 100% deductible as everyday business expenses.';
+      case 'Telecommunication': return 'Fully deductible if the line/internet is exclusively for business use.';
+      case 'Utilities': return 'Deductible if incurred at your primary place of business/office.';
+      case 'Software': return 'Can be expensed or capitalized depending on cost and useful life.';
+      default: return 'Must pass the WREN test (Wholly, Reasonably, Exclusively, and Necessarily incurred for business) to be deductible.';
+    }
+  };
 
   const simulateScan = () => {
     setIsScanning(true);
@@ -157,7 +175,7 @@ export default function Expenses() {
       if (navigator.share) {
         await navigator.share({
           title: 'MyTax Genius Expenses',
-          text: `Check out my expense report on MyTax Genius! Total Deductible: ₦${expenses.filter(e => e.status === 'Deductible').reduce((sum, e) => sum + Number(e.amount), 0).toLocaleString()}`,
+          text: `Check out my expense report on MyTax Genius! Total Deductible: ₦${expenses.filter((e: any) => e.status === 'Deductible').reduce((sum: number, e: any) => sum + Number(e.amount), 0).toLocaleString()}`,
           url: window.location.href,
         });
       } else {
@@ -214,13 +232,16 @@ export default function Expenses() {
     doc.save(`Expenses_Report_${safeDate}.pdf`);
   };
 
+  const totalDeductible = expenses.filter((e: any) => e.status === 'Deductible').reduce((sum: number, e: any) => sum + Number(e.amount), 0);
+  const estimatedTaxSavings = totalDeductible * 0.30;
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex font-sans text-slate-900">
       {/* Main Content (Simplifying layout for standalone page) */}
       <main className="flex-1 flex flex-col relative h-screen overflow-hidden min-w-0">
         
         {/* Header */}
-        <header className="h-auto min-h-[5rem] py-3 bg-white border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between px-6 shrink-0 z-40 shadow-sm relative gap-4">
+        <header className="h-auto min-h-20 py-3 bg-white border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between px-6 shrink-0 z-40 shadow-sm relative gap-4">
           <div className="flex items-center gap-4">
              <Link to="/dashboard" className="p-2 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors shrink-0">
               <svg className="w-5 h-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
@@ -252,7 +273,7 @@ export default function Expenses() {
         <div className="flex-1 overflow-y-auto p-6">
           <div className="max-w-6xl mx-auto space-y-6">
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-center gap-4">
                 <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center shrink-0">
                   <TrendingUp className="w-6 h-6" />
@@ -260,7 +281,7 @@ export default function Expenses() {
                 <div className="min-w-0">
                   <p className="text-sm font-bold text-slate-500 truncate">Total Deductible</p>
                   <h3 className="text-xl lg:text-2xl font-black text-slate-900 truncate">
-                    ₦{expenses.filter(e => e.status === 'Deductible').reduce((sum, e) => sum + Number(e.amount), 0).toLocaleString()}
+                    ₦{totalDeductible.toLocaleString()}
                   </h3>
                 </div>
               </div>
@@ -280,7 +301,18 @@ export default function Expenses() {
                 <div className="min-w-0">
                   <p className="text-sm font-bold text-slate-500 truncate">Needs Review</p>
                   <h3 className="text-xl lg:text-2xl font-black text-slate-900 truncate">
-                    {expenses.filter(e => e.status === 'Review Needed').length}
+                    {expenses.filter((e: any) => e.status === 'Review Needed').length}
+                  </h3>
+                </div>
+              </div>
+              <div className="bg-linear-to-br from-emerald-600 to-emerald-800 rounded-2xl p-6 shadow-sm flex items-center gap-4 text-white">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center shrink-0">
+                  <PieChartIcon className="w-6 h-6 text-white" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-bold text-emerald-100 truncate">Est. Tax Savings</p>
+                  <h3 className="text-xl lg:text-2xl font-black truncate">
+                    ₦{estimatedTaxSavings.toLocaleString()}
                   </h3>
                 </div>
               </div>
@@ -294,7 +326,7 @@ export default function Expenses() {
                   <PieChartIcon className="w-5 h-5 mr-2 text-emerald-600" />
                   Expenses by Category
                 </h3>
-                <div className="flex-1 min-h-[300px]">
+                <div className="flex-1 min-h-75">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -313,7 +345,7 @@ export default function Expenses() {
                       </Pie>
                       <Tooltip 
                         contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                        formatter={(value: number) => [`₦${value.toLocaleString()}`, 'Amount']}
+                        formatter={(value: any) => [`₦${Number(value).toLocaleString()}`, 'Amount']}
                       />
                       <Legend 
                         verticalAlign="bottom" 
@@ -332,7 +364,7 @@ export default function Expenses() {
                   <TrendingUp className="w-5 h-5 mr-2 text-blue-600" />
                   Monthly Spending Trend
                 </h3>
-                <div className="flex-1 min-h-[300px]">
+                <div className="flex-1 min-h-75">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={monthlyTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -341,7 +373,7 @@ export default function Expenses() {
                       <Tooltip 
                         cursor={{ fill: '#f1f5f9' }} 
                         contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                        formatter={(value: number) => [`₦${value.toLocaleString()}`, 'Expenses']}
+                        formatter={(value: any) => [`₦${Number(value).toLocaleString()}`, 'Expenses']}
                       />
                       <Bar dataKey="amount" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={40} />
                     </BarChart>
@@ -385,27 +417,53 @@ export default function Expenses() {
                       <th className="px-6 py-4">Merchant</th>
                       <th className="px-6 py-4">Category</th>
                       <th className="px-6 py-4 text-right">Amount (₦)</th>
-                      <th className="px-6 py-4">Tax Status</th>
+                      <th className="px-6 py-4">
+                        Tax Status 
+                        <span className="group relative inline-block ml-1 cursor-help">
+                           <AlertCircle className="w-3.5 h-3.5 inline text-slate-400" />
+                           <div className="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-slate-800 text-white text-[10px] rounded-lg shadow-xl z-50 text-center leading-relaxed font-medium">
+                             Deductible expenses lower your CIT/PIT. Change status individually based on category rules.
+                             <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-800"></div>
+                           </div>
+                        </span>
+                      </th>
                       <th className="px-6 py-4 text-center">Receipt</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 text-sm">
-                    {expenses.map((expense) => (
-                      <tr key={expense.id} className="hover:bg-slate-50">
+                    {expenses.map((expense: any) => (
+                      <tr 
+                        key={expense.id} 
+                        className={`transition-colors ${expense.status === 'Deductible' ? 'bg-emerald-50/30 hover:bg-emerald-50' : expense.status === 'Non-Deductible' ? 'hover:bg-slate-50' : 'bg-amber-50/30 hover:bg-amber-50'}`}
+                      >
                         <td className="px-6 py-4 font-medium text-slate-600">{expense.date}</td>
                         <td className="px-6 py-4 font-bold text-slate-900">{expense.merchant}</td>
-                        <td className="px-6 py-4">
-                          <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-bold">
+                        <td className="px-6 py-4 relative group">
+                          <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-bold cursor-default">
                             {expense.category}
                           </span>
+                          <div className="hidden group-hover:block absolute bottom-full left-6 mb-1 w-48 p-2 bg-slate-800 text-white text-[10px] rounded-lg shadow-xl z-50 normal-case font-medium leading-relaxed">
+                             {getTooltipContent(expense.category)}
+                             <div className="absolute top-full left-4 border-4 border-transparent border-t-slate-800"></div>
+                           </div>
                         </td>
                         <td className="px-6 py-4 font-bold text-slate-900 text-right">
                           {expense.amount.toLocaleString()}
                         </td>
                         <td className="px-6 py-4">
-                          {expense.status === 'Deductible' && <span className="text-emerald-600 font-bold flex items-center"><CheckCircle2 className="w-4 h-4 mr-1"/> Deductible</span>}
-                          {expense.status === 'Review Needed' && <span className="text-amber-600 font-bold flex items-center"><AlertCircle className="w-4 h-4 mr-1"/> Needs Review</span>}
-                          {expense.status === 'Non-Deductible' && <span className="text-slate-500 font-bold flex items-center"><X className="w-4 h-4 mr-1"/> Non-Deductible</span>}
+                          <select 
+                            value={expense.status}
+                            onChange={(e) => handleStatusChange(expense.id, e.target.value)}
+                            className={`text-xs font-bold rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 border-none cursor-pointer ${
+                              expense.status === 'Deductible' ? 'bg-emerald-100 text-emerald-700 focus:ring-emerald-500' :
+                              expense.status === 'Review Needed' ? 'bg-amber-100 text-amber-700 focus:ring-amber-500' :
+                              'bg-slate-200 text-slate-600 focus:ring-slate-500'
+                            }`}
+                          >
+                            <option value="Deductible">Deductible</option>
+                            <option value="Review Needed">Review Needed</option>
+                            <option value="Non-Deductible">Non-Deductible</option>
+                          </select>
                         </td>
                         <td className="px-6 py-4 text-center">
                           {expense.receipt ? (
@@ -458,7 +516,7 @@ export default function Expenses() {
                     />
                     <div 
                       onClick={() => fileInputRef.current?.click()}
-                      className="border-2 border-dashed border-emerald-300 bg-emerald-50 rounded-2xl rounded-2xl p-10 flex flex-col items-center justify-center cursor-pointer hover:bg-emerald-100 hover:border-emerald-400 transition-colors"
+                      className="border-2 border-dashed border-emerald-300 bg-emerald-50 rounded-2xl p-10 flex flex-col items-center justify-center cursor-pointer hover:bg-emerald-100 hover:border-emerald-400 transition-colors"
                     >
                       <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-emerald-600 mb-4 shadow-sm">
                         <Camera className="w-8 h-8" />

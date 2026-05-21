@@ -117,7 +117,7 @@ export default function BlogPost() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen pt-20 md:pt-28">
+    <div className="bg-linear-to-b from-gray-50 to-white min-h-screen pt-20 md:pt-28">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
 
         {/* BACK */}
@@ -208,7 +208,7 @@ export default function BlogPost() {
                   custom={i + 1}
                   className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition group"
                 >
-                  <div className="aspect-[4/3] overflow-hidden">
+                  <div className="aspect-4/3 overflow-hidden">
                     <img
                       src={item.img}
                       className="h-full w-full object-cover group-hover:scale-110 transition duration-500"

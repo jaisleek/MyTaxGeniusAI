@@ -4,6 +4,7 @@ import path from "path";
 import twilio from "twilio";
 import dotenv from "dotenv";
 import http from "http";
+import Groq from "groq-sdk";
 
 dotenv.config();
 
@@ -29,6 +30,60 @@ async function startServer() {
   const twilioClient = process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN
     ? twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
     : null;
+    
+  // Groq Client Setup setup for Llama 3.3 70B
+  const groqClient = process.env.GROQ_API_KEY ? new Groq({ apiKey: process.env.GROQ_API_KEY }) : null;
+
+  // Llama 3.3 70B Chat API proxy
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { contents, systemInstruction } = req.body;
+      
+      const messages: any[] = [];
+      if (systemInstruction) {
+        messages.push({ role: "system", content: systemInstruction });
+      }
+      
+      if (contents && Array.isArray(contents)) {
+        for (const msg of contents) {
+          messages.push({
+            role: msg.role === "model" ? "assistant" : "user",
+            content: msg.parts?.[0]?.text || ""
+          });
+        }
+      }
+
+      // If user provided a Groq API key, use it. Otherwise fallback to a simulated response or throw an error.
+      if (!groqClient) {
+        return res.status(403).json({ error: "Groq API key is missing. Please add GROQ_API_KEY to your settings to use Llama 3.3 70B." });
+      }
+
+      const stream = await groqClient.chat.completions.create({
+        messages: messages,
+        model: "llama-3.3-70b-versatile",
+        temperature: 0.7,
+        max_tokens: 2048,
+        stream: true,
+      });
+
+      res.setHeader("Content-Type", "text/event-stream");
+      res.setHeader("Cache-Control", "no-cache");
+      res.setHeader("Connection", "keep-alive");
+      res.flushHeaders();
+
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content || "";
+        if (content) {
+          res.write(`data: ${JSON.stringify({ text: content })}\n\n`);
+        }
+      }
+      res.write("data: [DONE]\n\n");
+      res.end();
+    } catch (error: any) {
+      console.error("Llama 3.3 70B Chat error:", error);
+      res.status(500).json({ error: error.message || "Failed to generate response" });
+    }
+  });
 
   // Create TIN
   app.post("/api/tin/register", async (req, res) => {

@@ -34,7 +34,7 @@ export default function TaxReforms() {
             2025 Tax Policy Updates
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
-            Decoding the New <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-200">Tax Reforms</span>
+            Decoding the New <span className="text-transparent bg-clip-text bg-linear-to-r from-emerald-400 to-emerald-200">Tax Reforms</span>
           </h1>
           <p className="text-xl text-slate-400 font-medium max-w-3xl mx-auto leading-relaxed">
             Understand how the latest government tax changes impact your everyday finances, business costs, and long-term planning. Practical insights, clear solutions.
@@ -107,21 +107,21 @@ export default function TaxReforms() {
             </div>
             <div className="p-6 md:p-8 space-y-6">
               <div className="flex items-start">
-                <CheckCircle2 className="w-6 h-6 text-emerald-500 mr-4 flex-shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-emerald-500 mr-4 shrink-0" />
                 <div>
                   <h4 className="font-bold text-slate-900 dark:text-white">Verify Your Tax ID Linkage</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">NIN is now directly tied to your Tax ID. Verify that your banks and employers have the identical records to prevent account freezes.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <CheckCircle2 className="w-6 h-6 text-emerald-500 mr-4 flex-shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-emerald-500 mr-4 shrink-0" />
                 <div>
                   <h4 className="font-bold text-slate-900 dark:text-white">Re-calculate Take Home</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Because basic allowances changed, your PAYE might be lower. Check your payslip or use our calculator to ensure you aren't over-taxed.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <CheckCircle2 className="w-6 h-6 text-emerald-500 mr-4 flex-shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-emerald-500 mr-4 shrink-0" />
                 <div>
                   <h4 className="font-bold text-slate-900 dark:text-white">File E-Returns Early</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Manual filings are deprecated. Use our AI agent to submit your annual PIT returns directly to the state portal.</p>
@@ -144,21 +144,21 @@ export default function TaxReforms() {
             </div>
             <div className="p-6 md:p-8 space-y-6">
               <div className="flex items-start">
-                <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 flex-shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 shrink-0" />
                 <div>
                   <h4 className="font-bold text-slate-900 dark:text-white">Implement E-Invoicing</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">The law now requires business-to-business transactions to pass through central automated tracking. Generate compliant e-invoices instantly via our tool.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 flex-shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 shrink-0" />
                 <div>
                   <h4 className="font-bold text-slate-900 dark:text-white">Claim SME Exemptions</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">If your turnover is &lt; ₦100M, you are exempt from CIT. But you MUST still file a nil return on time to avoid harsh penalties.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 flex-shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 shrink-0" />
                 <div>
                   <h4 className="font-bold text-slate-900 dark:text-white">Update Withholding Schedules</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">WHT rates have been updated for services and vendor payments. Update your payroll/vendor software to reflect the lower rates.</p>
@@ -194,9 +194,9 @@ export default function TaxReforms() {
               >
                 <span className="font-bold text-slate-900 dark:text-white pr-4">{faq.q}</span>
                 {openFaq === index ? (
-                  <ChevronUp className="w-5 h-5 text-slate-400 flex-shrink-0" />
+                  <ChevronUp className="w-5 h-5 text-slate-400 shrink-0" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-slate-400 flex-shrink-0" />
+                  <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />
                 )}
               </button>
               {openFaq === index && (

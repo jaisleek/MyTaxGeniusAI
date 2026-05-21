@@ -96,7 +96,7 @@ export default function TaxCalendar() {
                   checked={remindersEnabled}
                   onChange={(e) => setRemindersEnabled(e.target.checked)}
                 />
-                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
                 <span className="ml-3 text-sm font-bold text-slate-900">
                   {remindersEnabled ? 'Reminders Active' : 'Enable Reminders'}
                 </span>
@@ -181,7 +181,7 @@ export default function TaxCalendar() {
       </div>
 
       <div className="mt-8 bg-emerald-50 border border-emerald-200 rounded-xl p-6 flex items-start space-x-4">
-        <CheckCircle className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-0.5" />
+        <CheckCircle className="w-6 h-6 text-emerald-600 shrink-0 mt-0.5" />
         <div>
           <h4 className="font-bold text-emerald-900">Penalty Avoidance Tip</h4>
           <p className="text-sm text-emerald-800 mt-1">

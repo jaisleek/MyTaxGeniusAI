@@ -20,7 +20,7 @@ export default function InfoHub() {
         </div>
         <div className="bg-emerald-50/50 dark:bg-emerald-900/20 p-8">
           <div className="flex items-start mb-6">
-            <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 rounded-xl flex items-center justify-center mr-4 flex-shrink-0 border border-emerald-200 dark:border-emerald-800/50 shadow-inner">
+            <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 rounded-xl flex items-center justify-center mr-4 shrink-0 border border-emerald-200 dark:border-emerald-800/50 shadow-inner">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>

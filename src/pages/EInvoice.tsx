@@ -131,7 +131,7 @@ export default function EInvoice() {
                   value={item.description}
                   onChange={(e) => updateItem(item.id, 'description', e.target.value)}
                   placeholder="Item description"
-                  className="flex-grow px-3 py-2 rounded-lg border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-green-500 text-sm transition-colors duration-300"
+                  className="grow px-3 py-2 rounded-lg border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-green-500 text-sm transition-colors duration-300"
                 />
                 <input 
                   type="number" 
@@ -189,7 +189,7 @@ export default function EInvoice() {
               <p className="text-gray-600">{customerEmail || 'email@company.com'}</p>
             </div>
 
-            <div className="flex-grow">
+            <div className="grow">
               <table className="w-full text-left text-sm">
                 <thead>
                   <tr className="border-b-2 border-gray-900 text-gray-900">

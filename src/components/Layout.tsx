@@ -236,7 +236,7 @@ export default function Layout() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -15 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="flex-grow pt-16 lg:pt-24"
+          className="grow pt-16 lg:pt-24"
         >
           <Outlet />
         </motion.main>

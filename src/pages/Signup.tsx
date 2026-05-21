@@ -109,8 +109,8 @@ export default function Signup() {
       {/* Left Panel - Branding (Hidden on Mobile) */}
       <div className="hidden lg:flex lg:w-1/2 bg-[#0F172A] relative flex-col justify-between p-12 overflow-hidden">
         {/* Background glow effects */}
-        <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-gradient-to-br from-emerald-600/30 to-blue-600/30 rounded-full blur-[100px] pointer-events-none mix-blend-screen"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-emerald-600/20 rounded-full blur-[80px] pointer-events-none mix-blend-screen"></div>
+        <div className="absolute top-[-20%] left-[-10%] w-125 h-125 bg-linear-to-br from-emerald-600/30 to-blue-600/30 rounded-full blur-[100px] pointer-events-none mix-blend-screen"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-100 h-100 bg-emerald-600/20 rounded-full blur-[80px] pointer-events-none mix-blend-screen"></div>
         
         {/* Logo */}
         <div className="relative z-10 flex items-center space-x-2">
@@ -176,7 +176,7 @@ export default function Signup() {
              {error && (
                <div className="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-xl p-4 flex items-start space-x-3">
                  <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
-                 <p className="text-sm font-medium text-red-800 dark:text-red-300 relative top-[1px]">
+                 <p className="text-sm font-medium text-red-800 dark:text-red-300 relative top-px">
                    {error}
                  </p>
                </div>
@@ -185,7 +185,7 @@ export default function Signup() {
              {isSuccess && (
                <div className="mb-6 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/50 rounded-xl p-4 flex items-start space-x-3">
                  <CheckCircle className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                 <p className="text-sm font-medium text-emerald-800 dark:text-emerald-300 relative top-[1px]">
+                 <p className="text-sm font-medium text-emerald-800 dark:text-emerald-300 relative top-px">
                    Account created securely! Verification email sent to {email}. Redirecting...
                  </p>
                </div>

@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { GoogleGenAI } from "@google/genai";
 import {
   Send,
   Bot,
@@ -22,9 +21,6 @@ import Markdown from "react-markdown";
 import { cn } from "../components/Layout";
 import { Logo } from "../components/Logo";
 import { taxKnowledgeBase } from "../data/taxKnowledge";
-
-// Initialize Gemini
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
 const TRANSLATIONS = {
   English: {
@@ -505,7 +501,7 @@ CRITICAL FORMATTING & BEHAVIOR RULES:
 3. Use **bold text** to highlight key financial terms, categories, and metrics.
 4. Use clear bullet points (-) or numbered lists (1. 2.) to break down steps. keep it concise.
 5. Use ### Headings when shifting to a new major point.
-6. INCLUDE RELEVANT LINKS: Add relevant actionable links affiliated with the NRS (Nigeria Revenue Service) (e.g., https://taxpromax.firs.gov.ng) in your replies.
+6. INCLUDE RELEVANT LINKS (CRITICAL): For ANY response that mentions online portals, payment methods, or resources where the user needs to go to a link, you MUST attach the actionable link directly in your response using markdown. (e.g., [TaxPro Max](https://taxpromax.firs.gov.ng), [MyTaxGenius Dashboard](/dashboard), [TIN Registration](/tin)).
 7. AUDIT DEFENSE: If asked about deductibles (e.g., Generator fuel, rent), give exact legal answers based on Nigerian Tax Law (Finance Act). E.g., "Yes, diesel expenses are fully tax-deductible as they are 'wholly, reasonably, exclusively and necessarily' (WREN) incurred for business."
 8. USSD / OFFLINE ACCESS: If asked about USSD, offline access, or how to pay without internet, explain that users can dial *402# or a mock USSD code like *347*829# to file basic taxes and pay from their bank accounts offline.
 
@@ -524,34 +520,63 @@ CRITICAL AUTO-TRANSLATION (MANDATORY):
 ${taxKnowledgeBase}
 ==================================================`;
 
-      const responseStream = await ai.models.generateContentStream({
-        model: "gemini-2.5-flash",
-        contents,
-        config: {
-          systemInstruction,
-        },
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents, systemInstruction }),
       });
 
-      let responseText = "";
-      const modelMessageId = Date.now().toString();
-
-      setIsLoading(false); // Disable typing indicator to show text immediately
-
-      for await (const chunk of responseStream) {
-        responseText += chunk.text;
-        updateCurrentSession(
-          [
-            ...tempMessages,
-            {
-              id: modelMessageId,
-              role: "model" as const,
-              content: responseText,
-            },
-          ],
-          undefined,
-          activeSessionId,
-        );
+      if (!response.ok) {
+         const errorBody = await response.json().catch(() => ({}));
+         throw new Error(errorBody.error || `HTTP error! status: ${response.status}`);
       }
+
+      const reader = response.body?.getReader();
+        const decoder = new TextDecoder("utf-8");
+        
+        let responseText = "";
+        const modelMessageId = Date.now().toString();
+
+        setIsLoading(false); // Disable typing indicator to show text immediately
+
+        if (reader) {
+          let buffer = "";
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || ""; // keep incomplete line in buffer
+            
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const dataStr = line.slice(6);
+                if (dataStr.trim() === '[DONE]') continue;
+                try {
+                  const data = JSON.parse(dataStr);
+                  if (data.text) {
+                    responseText += data.text;
+                    updateCurrentSession(
+                      [
+                        ...tempMessages,
+                        {
+                          id: modelMessageId,
+                          role: "model" as const,
+                          content: responseText,
+                        },
+                      ],
+                      undefined,
+                      activeSessionId,
+                    );
+                  }
+                } catch (e) {
+                  // Ignore incomplete JSON chunks (shouldn't happen with single complete JSON per line, but safe)
+                }
+              }
+            }
+          }
+        }
 
       // Automatically scroll to the beginning of the AI response once done
       setTimeout(() => {
@@ -594,13 +619,13 @@ ${taxKnowledgeBase}
       {/* Sidebar */}
       <div
         className={cn(
-          "absolute md:relative z-30 h-full w-[260px] bg-[#f9f9f9] dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col transition-transform duration-300 ease-in-out",
+          "absolute md:relative z-30 h-full w-65 bg-[#f9f9f9] dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col transition-transform duration-300 ease-in-out",
           isSidebarOpen
             ? "translate-x-0"
             : "-translate-x-full md:translate-x-0",
         )}
       >
-        <div className="p-3 flex-shrink-0 flex items-center justify-between">
+        <div className="p-3 shrink-0 flex items-center justify-between">
           <button
             onClick={createNewChat}
             className="flex-1 flex items-center space-x-2 hover:bg-gray-200 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 p-2.5 rounded-lg transition-colors font-medium text-sm"
@@ -641,7 +666,7 @@ ${taxKnowledgeBase}
               )}
             >
               <div className="flex items-center space-x-2 overflow-hidden">
-                <MessageSquare className="w-4 h-4 flex-shrink-0 opacity-70" />
+                <MessageSquare className="w-4 h-4 shrink-0 opacity-70" />
                 <span className="truncate">{session.title}</span>
               </div>
               <button
@@ -697,7 +722,7 @@ ${taxKnowledgeBase}
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col h-full overflow-hidden">
         {/* Header Area / Controls */}
-        <div className="flex justify-between items-center px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-10 flex-shrink-0">
+        <div className="flex justify-between items-center px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-10 shrink-0">
           <div className="flex items-center space-x-3">
             <button
               className="md:hidden p-2 -ml-2 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-800 rounded-lg"
@@ -734,7 +759,7 @@ ${taxKnowledgeBase}
 
         {/* Voice Mode Overlay */}
         {isListening && (
-          <div className="absolute inset-x-0 bottom-0 top-[60px] z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 animate-in fade-in duration-300">
+          <div className="absolute inset-x-0 bottom-0 top-15 z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 animate-in fade-in duration-300">
             <div className="relative w-64 h-64 flex items-center justify-center mb-10">
               <div className="absolute inset-0 bg-emerald-500 rounded-full animate-ping opacity-10"></div>
               <div className="absolute inset-4 bg-emerald-400 rounded-full animate-pulse opacity-20"></div>
@@ -748,7 +773,7 @@ ${taxKnowledgeBase}
               <div className="text-emerald-600 dark:text-emerald-400 font-semibold tracking-widest uppercase animate-pulse">
                 Recording...
               </div>
-              <div className="w-full min-h-[140px] bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 overflow-y-auto shadow-inner flex items-center justify-center">
+              <div className="w-full min-h-35 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 overflow-y-auto shadow-inner flex items-center justify-center">
                  <p className={cn(
                    "text-xl sm:text-2xl font-medium text-center transition-colors",
                    input ? "text-slate-800 dark:text-slate-200" : "text-slate-400 dark:text-slate-500"
@@ -819,7 +844,7 @@ ${taxKnowledgeBase}
                     )}
                   >
                     {msg.role === "model" && (
-                      <div className="w-8 h-8 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center flex-shrink-0 mr-4 mt-1 overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
+                      <div className="w-8 h-8 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center shrink-0 mr-4 mt-1 overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
                         <BotAvatar className="w-5 h-5 object-contain" />
                       </div>
                     )}
@@ -850,7 +875,7 @@ ${taxKnowledgeBase}
 
               {isLoading && (
                 <div className="flex w-full justify-start animate-pulse mt-4">
-                  <div className="w-8 h-8 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center flex-shrink-0 mr-4 mt-1 overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
+                  <div className="w-8 h-8 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center shrink-0 mr-4 mt-1 overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
                     <BotAvatar className="w-5 h-5 object-contain" />
                   </div>
                   <div className="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 py-2">
@@ -867,7 +892,7 @@ ${taxKnowledgeBase}
         </div>
 
         {/* Floating Input Area */}
-        <div className="w-full bg-gradient-to-t from-white via-white to-transparent dark:from-slate-950 dark:via-slate-950 pt-6 pb-6 px-4 shrink-0 z-10 bottom-0 mt-auto">
+        <div className="w-full bg-linear-to-t from-white via-white to-transparent dark:from-slate-950 dark:via-slate-950 pt-6 pb-6 px-4 shrink-0 z-10 bottom-0 mt-auto">
           <div className="max-w-3xl mx-auto">
             <form
               onSubmit={(e) => handleSend(e)}
@@ -883,7 +908,7 @@ ${taxKnowledgeBase}
                   }
                 }}
                 placeholder={isListening ? "Listening..." : `Ask anything in ${language}...`}
-                className="w-full max-h-32 min-h-[56px] py-4 pl-6 pr-24 bg-transparent border-none resize-none focus:outline-none focus:ring-0 text-slate-900 dark:text-slate-100 placeholder-slate-500"
+                className="w-full max-h-32 min-h-14 py-4 pl-6 pr-24 bg-transparent border-none resize-none focus:outline-none focus:ring-0 text-slate-900 dark:text-slate-100 placeholder-slate-500"
                 rows={1}
                 disabled={isLoading}
               />

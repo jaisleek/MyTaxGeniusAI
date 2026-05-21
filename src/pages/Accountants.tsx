@@ -97,7 +97,7 @@ export default function Accountants() {
       <section className="max-w-3xl mx-auto px-4">
         <div className="bg-white dark:bg-slate-900 duration-300 rounded-3xl shadow-xl border border-gray-200 dark:border-slate-800 overflow-hidden">
           <div className="p-8 md:p-10 border-b border-gray-100 dark:border-slate-800 bg-gray-50 dark:bg-slate-900 flex items-center space-x-4">
-            <ShieldCheck className="w-10 h-10 text-green-700 dark:text-green-500 flex-shrink-0" />
+            <ShieldCheck className="w-10 h-10 text-green-700 dark:text-green-500 shrink-0" />
             <div>
               <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">Apply for the Professional Network</h2>
               <p className="text-gray-600 dark:text-gray-400 text-sm">You must hold an active CITN or ICAN registration to be approved.</p>

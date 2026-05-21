@@ -246,7 +246,7 @@ export default function Vault() {
                 >
                   <Folder className={`w-5 h-5 mr-3 shrink-0 ${activeFolderId === folder.id ? 'text-emerald-500' : 'text-slate-400'}`} />
                   <span className="truncate">{folder.name}</span>
-                  <span className="ml-auto text-xs bg-white/50 px-2 py-0.5 rounded-full border border-slate-100 flex-shrink-0 group-hover:hidden">
+                  <span className="ml-auto text-xs bg-white/50 px-2 py-0.5 rounded-full border border-slate-100 shrink-0 group-hover:hidden">
                     {folder.documents.length}
                   </span>
                 </button>
@@ -422,7 +422,7 @@ export default function Vault() {
                     {selectedFiles.map((file, idx) => (
                       <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-xl">
                         <div className="flex items-center space-x-3 overflow-hidden">
-                          <FileText className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+                          <FileText className="w-5 h-5 text-emerald-600 shrink-0" />
                           <span className="text-sm font-bold text-slate-700 truncate">{file.name}</span>
                         </div>
                         <button 

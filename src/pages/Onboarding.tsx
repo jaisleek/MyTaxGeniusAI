@@ -169,7 +169,7 @@ export default function Onboarding() {
 
   return (
     <div className="min-h-screen bg-white md:bg-[#F8FAFC] flex flex-col items-center justify-center p-4 sm:p-6 font-sans">
-      <div className="w-full max-w-4xl bg-white md:rounded-[2rem] md:shadow-[0_20px_60px_rgba(0,0,0,0.05)] md:border border-slate-100 overflow-hidden min-h-[600px] flex flex-col relative">
+      <div className="w-full max-w-4xl bg-white md:rounded-4xl md:shadow-[0_20px_60px_rgba(0,0,0,0.05)] md:border border-slate-100 overflow-hidden min-h-150 flex flex-col relative">
         
         {/* Progress Bar */}
         <div className="absolute top-0 left-0 w-full h-1.5 bg-slate-100">

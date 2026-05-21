@@ -15,7 +15,7 @@ export function NigeriaTaxLayer() {
   return (
     <section className="py-24 bg-[#0F172A] relative overflow-hidden isolate">
       {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-gradient-to-br from-emerald-600/20 to-green-600/20 rounded-full blur-[100px] -z-10 mix-blend-screen pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-200 max-h-200 bg-linear-to-br from-emerald-600/20 to-green-600/20 rounded-full blur-[100px] -z-10 mix-blend-screen pointer-events-none"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -32,7 +32,7 @@ export function NigeriaTaxLayer() {
             
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
               Don't just think Federal. <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-400">Master all 36 States.</span>
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-emerald-400 to-green-400">Master all 36 States.</span>
             </h2>
             
             <p className="text-lg text-slate-300 font-medium leading-relaxed max-w-lg">
@@ -70,7 +70,7 @@ export function NigeriaTaxLayer() {
                 </div>
               </div>
 
-              <div className="h-[250px] md:h-[300px] w-full">
+              <div className="h-62.5 md:h-62.5 w-full">
                 <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                   <AreaChart data={data} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
                     <defs>

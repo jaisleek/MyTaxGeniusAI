@@ -203,7 +203,7 @@ export default function Analytics() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-3xl p-8 text-white relative overflow-hidden shadow-lg"
+          className="bg-linear-to-r from-emerald-600 to-teal-700 rounded-3xl p-8 text-white relative overflow-hidden shadow-lg"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
           <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -276,7 +276,7 @@ export default function Analytics() {
             transition={{ delay: 0.3 }}
             className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm relative overflow-hidden"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent to-emerald-50 dark:to-emerald-900/10 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-linear-to-br from-transparent to-emerald-50 dark:to-emerald-900/10 pointer-events-none"></div>
             <div className="flex justify-between items-start mb-4 relative z-10">
               <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center">
                 <ShieldCheck className="w-5 h-5" />
@@ -319,7 +319,7 @@ export default function Analytics() {
               </div>
             </div>
             
-            <div className="h-[300px] w-full">
+            <div className="h-75 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={monthlyData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                   <defs>
@@ -361,7 +361,7 @@ export default function Analytics() {
               <p className="text-sm text-slate-500 dark:text-slate-400">Where you're saving money</p>
             </div>
             
-            <div className="h-[200px] w-full my-4 flex-shrink-0">
+            <div className="h-50 w-full my-4 shrink-0">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -434,7 +434,7 @@ export default function Analytics() {
               {riskFactors.map((factor, index) => (
                 <div key={index} className="p-6 sm:p-8 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors flex flex-col sm:flex-row sm:items-start justify-between gap-6">
                   <div className="flex items-start gap-4 flex-1">
-                    <div className={`mt-1 flex-shrink-0 ${
+                    <div className={`mt-1 shrink-0 ${
                       factor.status === 'warning' ? 'text-yellow-500' : 'text-emerald-500'
                     }`}>
                       {factor.status === 'warning' ? <AlertTriangle className="w-5 h-5" /> : <CheckCircle2 className="w-5 h-5" />}

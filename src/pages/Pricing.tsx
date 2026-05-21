@@ -103,9 +103,9 @@ export default function Pricing() {
               {plan.features.map((feature, idx) => (
                 <li key={idx} className="flex items-start">
                   {feature.included === false ? (
-                    <X className="w-5 h-5 text-gray-300 mr-3 flex-shrink-0" />
+                    <X className="w-5 h-5 text-gray-300 mr-3 shrink-0" />
                   ) : (
-                    <Check className="w-5 h-5 text-emerald-500 mr-3 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-emerald-500 mr-3 shrink-0" />
                   )}
                   <span className={`text-sm ${feature.included === false ? 'text-gray-400 dark:text-gray-600' : 'text-gray-700 dark:text-gray-300'}`}>
                     {typeof feature.included === 'string' ? (
