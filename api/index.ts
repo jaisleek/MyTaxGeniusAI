@@ -2,6 +2,7 @@ import express from "express";
 import twilio from "twilio";
 import Groq from "groq-sdk";
 import dotenv from "dotenv";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 
@@ -22,6 +23,17 @@ const twilioClient = process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_T
   ? twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
   : null;
   
+// Nodemailer Setup
+const emailTransporter = process.env.SMTP_HOST ? nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT || "587"),
+  secure: process.env.SMTP_SECURE === "true",
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+}) : null;
+
 // Groq Client Setup
 const groqClient = process.env.GROQ_API_KEY ? new Groq({ apiKey: process.env.GROQ_API_KEY }) : null;
 
@@ -81,14 +93,66 @@ app.post("/api/chat", async (req, res) => {
 app.post("/api/tin/register", async (req, res) => {
   try {
     const { firstName, lastName, email, phone, businessName, businessType } = req.body;
-    const tin = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+    // Generate an authentic looking NRS TIN (e.g., 100XXXXXXX-0001 or 2456XXXXXX)
+    const baseTin = '2456' + Math.floor(100000 + Math.random() * 900000).toString();
+    const branchCode = '0001';
+    const tin = `${baseTin}-${branchCode}`;
     const newTinRecord = {
       id: Date.now().toString(),
       tin, firstName, lastName, email, phone, businessName, businessType,
       createdAt: new Date().toISOString()
     };
     db.tins.push(newTinRecord);
-    res.json({ success: true, tin: newTinRecord });
+
+    let messagesSent = { email: false, sms: false };
+
+    // Send SMS via Twilio
+    if (twilioClient && phone) {
+      try {
+        const formattedPhone = phone.startsWith('0') ? '+234' + phone.substring(1) : phone;
+        await twilioClient.messages.create({
+          body: `MyTaxGenius: Your official NRS Tax Identification Number (TIN) is ${tin}. Keep this safe for all tax filings.`,
+          from: process.env.TWILIO_PHONE_NUMBER || "whatsapp:+14155238886",
+          to: formattedPhone.includes('+') ? formattedPhone : `+${formattedPhone}`
+        });
+        messagesSent.sms = true;
+      } catch (err: any) {
+        console.error("Failed to send SMS:", err.message);
+      }
+    } else {
+      console.log(`[MOCK SMS] To: ${phone} - Body: MyTaxGenius: Your official NRS Tax Identification Number (TIN) is ${tin}.`);
+    }
+
+    // Send Email via Nodemailer
+    if (emailTransporter && email) {
+      try {
+        await emailTransporter.sendMail({
+          from: `"MyTaxGenius NRS Reg" <${process.env.SMTP_USER || 'noreply@mytaxgenius.com'}>`,
+          to: email,
+          subject: "Your Official Tax Identification Number (TIN)",
+          html: `
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2>Registration Successful</h2>
+              <p>Dear ${firstName} ${lastName},</p>
+              <p>Your business <strong>${businessName}</strong> has been successfully registered.</p>
+              <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+                <p style="margin: 0; color: #6b7280; font-size: 14px; text-transform: uppercase;">Your Tax ID (TIN)</p>
+                <p style="margin: 5px 0 0; font-size: 32px; font-weight: bold; color: #047857; letter-spacing: 2px;">${tin}</p>
+              </div>
+              <p>Please keep this safe for all future tax filings with the Nigeria Revenue Service.</p>
+              <p>Best regards,<br>MyTaxGenius Team</p>
+            </div>
+          `
+        });
+        messagesSent.email = true;
+      } catch (err: any) {
+        console.error("Failed to send Email:", err.message);
+      }
+    } else {
+      console.log(`[MOCK EMAIL] To: ${email} - Subject: Your Official Tax Identification Number (TIN) - TIN: ${tin}`);
+    }
+
+    res.json({ success: true, tin: newTinRecord, messagesSent });
   } catch (error) {
     res.status(500).json({ error: "Failed to register TIN" });
   }
@@ -144,11 +208,15 @@ app.post("/api/whatsapp/webhook", async (req, res) => {
       return;
     }
 
-    const systemInstruction = `You are TaxBuddy AI, an independent, AI-powered "Audit Defense" & Tax Advisor, and an expert in Nigerian tax law designed to help SMEs and individuals.
-IMPORTANT DISCLAIMER: You are independent but highly knowledgeable.
+    const systemInstruction = `You are TaxGenius, an authentic, proprietary AI assistant developed exclusively by MyTaxGenius. You are an expert in Nigerian tax law and an "Audit Defense" advisor, designed to help SMEs and individuals navigate the new NRS tax reforms.
+
+CRITICAL IDENTITY RULES:
+1. NEVER refer to yourself as an AI developed by Groq, Llama, Meta, OpenAI, Google, or any other third-party company.
+2. If asked who built or created you, you MUST reply: "I am TaxGenius, an authentic AI assistant developed by MyTaxGenius."
+3. You do not have knowledge of your underlying model architecture.
 
 CRITICAL FORMATTING & BEHAVIOR RULES:
-1. NO INTRODUCTIONS: Never say "Hello, I am TaxBuddy AI..." just answer the question directly. Dive straight into the solution.
+1. NO INTRODUCTIONS: Never say "Hello, I am TaxGenius..." just answer the question directly. Dive straight into the solution.
 2. Format your responses beautifully and structurally like an expert professional AI. Use short, punchy sentences.
 3. Keep it brief and well-formatted for WhatsApp.
 4. Provide actionable advice for Nigerian SMEs regarding VAT, CIT, PIT, etc.`;

@@ -34,7 +34,7 @@ export default function TaxReforms() {
             2025 Tax Policy Updates
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
-            Decoding the New <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-emerald-200">Tax Reforms</span>
+            Decoding the New <span className="text-transparent bg-clip-text bg-linear-to-r from-emerald-400 to-emerald-200">Tax Reforms</span>
           </h1>
           <p className="text-xl text-slate-400 font-medium max-w-3xl mx-auto leading-relaxed">
             Understand how the latest government tax changes impact your everyday finances, business costs, and long-term planning. Practical insights, clear solutions.
@@ -86,6 +86,52 @@ export default function TaxReforms() {
         </div>
       </div>
 
+      {/* REV360 INITIATIVE SECTION */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
+        <div className="bg-slate-900 rounded-3xl p-8 md:p-12 border border-slate-800 shadow-2xl overflow-hidden relative">
+          <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+            <UserCircle className="w-64 h-64 text-emerald-500" />
+          </div>
+          <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 font-bold mb-6 text-sm">
+                Official NRS Platform Launch
+              </div>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6">
+                Meet <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-emerald-400">Rev360</span>
+              </h2>
+              <blockquote className="border-l-4 border-emerald-500 pl-4 py-2 mb-8">
+                <p className="text-xl text-slate-300 italic">
+                  "The future of tax administration is not something we are waiting for. It is something we are building. Through Rev360, we take another major step towards that future."
+                </p>
+                <footer className="text-emerald-400 font-bold mt-2">— Zacch A. Adedeji PhD, Executive Chairman</footer>
+              </blockquote>
+              <Link to="/chat" className="inline-flex items-center text-emerald-400 font-bold hover:text-emerald-300 transition-colors">
+                Ask our AI about Rev360 compatibility <ArrowUp className="w-4 h-4 ml-2 rotate-45" />
+              </Link>
+            </div>
+            <div className="space-y-6">
+              <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50">
+                <h4 className="text-lg font-bold text-white mb-2 flex items-center">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500 mr-2" /> Fulfilling the Promise
+                </h4>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  The new tax laws promised simpler compliance, easier engagement, and greater efficiency. Rev360 is the digital platform designed to deliver on these promises natively.
+                </p>
+              </div>
+              <div className="bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50">
+                <h4 className="text-lg font-bold text-white mb-2 flex items-center">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500 mr-2" /> A Milestone Step
+                </h4>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  Aligned with PBAT's Reform Agenda, Rev360 modernizes tax administration. It's a continuous journey to build a stronger, transparent, and responsive revenue system.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* PRACTICAL INSIGHTS: INDIVIDUALS VS BUSINESSES */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
         <div className="text-center mb-12">
@@ -107,21 +153,21 @@ export default function TaxReforms() {
             </div>
             <div className="p-6 md:p-8 space-y-6">
               <div className="flex items-start">
-                <CheckCircle2 className="w-6 h-6 text-emerald-500 mr-4 flex-shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-emerald-500 mr-4 shrink-0" />
                 <div>
                   <h4 className="font-bold text-slate-900 dark:text-white">Verify Your Tax ID Linkage</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">NIN is now directly tied to your Tax ID. Verify that your banks and employers have the identical records to prevent account freezes.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <CheckCircle2 className="w-6 h-6 text-emerald-500 mr-4 flex-shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-emerald-500 mr-4 shrink-0" />
                 <div>
                   <h4 className="font-bold text-slate-900 dark:text-white">Re-calculate Take Home</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Because basic allowances changed, your PAYE might be lower. Check your payslip or use our calculator to ensure you aren't over-taxed.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <CheckCircle2 className="w-6 h-6 text-emerald-500 mr-4 flex-shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-emerald-500 mr-4 shrink-0" />
                 <div>
                   <h4 className="font-bold text-slate-900 dark:text-white">File E-Returns Early</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Manual filings are deprecated. Use our AI agent to submit your annual PIT returns directly to the state portal.</p>
@@ -144,21 +190,21 @@ export default function TaxReforms() {
             </div>
             <div className="p-6 md:p-8 space-y-6">
               <div className="flex items-start">
-                <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 flex-shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 shrink-0" />
                 <div>
                   <h4 className="font-bold text-slate-900 dark:text-white">Implement E-Invoicing</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">The law now requires business-to-business transactions to pass through central automated tracking. Generate compliant e-invoices instantly via our tool.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 flex-shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 shrink-0" />
                 <div>
                   <h4 className="font-bold text-slate-900 dark:text-white">Claim SME Exemptions</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">If your turnover is &lt; ₦100M, you are exempt from CIT. But you MUST still file a nil return on time to avoid harsh penalties.</p>
                 </div>
               </div>
               <div className="flex items-start">
-                <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 flex-shrink-0" />
+                <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 shrink-0" />
                 <div>
                   <h4 className="font-bold text-slate-900 dark:text-white">Update Withholding Schedules</h4>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">WHT rates have been updated for services and vendor payments. Update your payroll/vendor software to reflect the lower rates.</p>
@@ -194,9 +240,9 @@ export default function TaxReforms() {
               >
                 <span className="font-bold text-slate-900 dark:text-white pr-4">{faq.q}</span>
                 {openFaq === index ? (
-                  <ChevronUp className="w-5 h-5 text-slate-400 flex-shrink-0" />
+                  <ChevronUp className="w-5 h-5 text-slate-400 shrink-0" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-slate-400 flex-shrink-0" />
+                  <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />
                 )}
               </button>
               {openFaq === index && (

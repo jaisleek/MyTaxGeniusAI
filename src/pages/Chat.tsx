@@ -445,11 +445,15 @@ export default function Chat() {
           parts: [{ text: m.content }],
         }));
 
-      const systemInstruction = `You are TaxBuddy AI, an independent, AI-powered "Audit Defense" & Tax Advisor, and an expert in Nigerian tax law designed to help SMEs and individuals.
-IMPORTANT DISCLAIMER: You are independent but highly knowledgeable.
+      const systemInstruction = `You are TaxGenius, an authentic, proprietary AI assistant developed exclusively by MyTaxGenius. You are an expert in Nigerian tax law and an "Audit Defense" advisor, designed to help SMEs and individuals navigate the new NRS tax reforms.
+
+CRITICAL IDENTITY RULES:
+1. NEVER refer to yourself as an AI developed by Groq, Llama, Meta, OpenAI, Google, or any other third-party company.
+2. If asked who built or created you, you MUST reply: "I am TaxGenius, an authentic AI assistant developed by MyTaxGenius."
+3. You do not have knowledge of your underlying model architecture.
 
 CRITICAL FORMATTING & BEHAVIOR RULES:
-1. NO INTRODUCTIONS: Never say "Hello, I am TaxBuddy AI..." just answer the question directly. Dive straight into the solution.
+1. NO INTRODUCTIONS: Never say "Hello, I am TaxGenius..." just answer the question directly. Dive straight into the solution.
 2. Format your responses beautifully and structurally like an expert professional AI. Use short, punchy sentences.
 3. Use **bold text** to highlight key financial terms, categories, and metrics.
 4. Use clear bullet points (-) or numbered lists (1. 2.) to break down steps. keep it concise.
@@ -577,13 +581,13 @@ ${taxKnowledgeBase}
       {/* Sidebar */}
       <div
         className={cn(
-          "absolute md:relative z-30 h-full w-[260px] bg-[#f9f9f9] dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col transition-transform duration-300 ease-in-out",
+          "absolute md:relative z-30 h-full w-65 bg-[#f9f9f9] dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col transition-transform duration-300 ease-in-out",
           isSidebarOpen
             ? "translate-x-0"
             : "-translate-x-full md:translate-x-0",
         )}
       >
-        <div className="p-3 flex-shrink-0 flex items-center justify-between">
+        <div className="p-3 shrink-0 flex items-center justify-between">
           <button
             onClick={createNewChat}
             className="flex-1 flex items-center space-x-2 hover:bg-gray-200 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 p-2.5 rounded-lg transition-colors font-medium text-sm"
@@ -624,7 +628,7 @@ ${taxKnowledgeBase}
               )}
             >
               <div className="flex items-center space-x-2 overflow-hidden">
-                <MessageSquare className="w-4 h-4 flex-shrink-0 opacity-70" />
+                <MessageSquare className="w-4 h-4 shrink-0 opacity-70" />
                 <span className="truncate">{session.title}</span>
               </div>
               <button
@@ -680,7 +684,7 @@ ${taxKnowledgeBase}
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col h-full overflow-hidden">
         {/* Header Area / Controls */}
-        <div className="flex justify-between items-center px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-10 flex-shrink-0">
+        <div className="flex justify-between items-center px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-10 shrink-0">
           <div className="flex items-center space-x-3">
             <button
               className="md:hidden p-2 -ml-2 text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-800 rounded-lg"
@@ -717,7 +721,7 @@ ${taxKnowledgeBase}
 
         {/* Voice Mode Overlay */}
         {isListening && (
-          <div className="absolute inset-x-0 bottom-0 top-[60px] z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 animate-in fade-in duration-300">
+          <div className="absolute inset-x-0 bottom-0 top-15 z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 animate-in fade-in duration-300">
             <div className="relative w-64 h-64 flex items-center justify-center mb-10">
               <div className="absolute inset-0 bg-emerald-500 rounded-full animate-ping opacity-10"></div>
               <div className="absolute inset-4 bg-emerald-400 rounded-full animate-pulse opacity-20"></div>
@@ -731,7 +735,7 @@ ${taxKnowledgeBase}
               <div className="text-emerald-600 dark:text-emerald-400 font-semibold tracking-widest uppercase animate-pulse">
                 Recording...
               </div>
-              <div className="w-full min-h-[140px] bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 overflow-y-auto shadow-inner flex items-center justify-center">
+              <div className="w-full min-h-35 bg-gray-50/50 dark:bg-slate-900/50 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 overflow-y-auto shadow-inner flex items-center justify-center">
                  <p className={cn(
                    "text-xl sm:text-2xl font-medium text-center transition-colors",
                    input ? "text-slate-800 dark:text-slate-200" : "text-slate-400 dark:text-slate-500"
@@ -802,7 +806,7 @@ ${taxKnowledgeBase}
                     )}
                   >
                     {msg.role === "model" && (
-                      <div className="w-8 h-8 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center flex-shrink-0 mr-4 mt-1 overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
+                      <div className="w-8 h-8 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center shrink-0 mr-4 mt-1 overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
                         <BotAvatar className="w-5 h-5 object-contain" />
                       </div>
                     )}
@@ -833,7 +837,7 @@ ${taxKnowledgeBase}
 
               {isLoading && (
                 <div className="flex w-full justify-start animate-pulse mt-4">
-                  <div className="w-8 h-8 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center flex-shrink-0 mr-4 mt-1 overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
+                  <div className="w-8 h-8 rounded-full bg-white dark:bg-slate-900 flex items-center justify-center shrink-0 mr-4 mt-1 overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
                     <BotAvatar className="w-5 h-5 object-contain" />
                   </div>
                   <div className="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 py-2">
@@ -850,7 +854,7 @@ ${taxKnowledgeBase}
         </div>
 
         {/* Floating Input Area */}
-        <div className="w-full bg-gradient-to-t from-white via-white to-transparent dark:from-slate-950 dark:via-slate-950 pt-6 pb-6 px-4 shrink-0 z-10 bottom-0 mt-auto">
+        <div className="w-full bg-linear-to-t from-white via-white to-transparent dark:from-slate-950 dark:via-slate-950 pt-6 pb-6 px-4 shrink-0 z-10 bottom-0 mt-auto">
           <div className="max-w-3xl mx-auto">
             <form
               onSubmit={(e) => handleSend(e)}
@@ -866,7 +870,7 @@ ${taxKnowledgeBase}
                   }
                 }}
                 placeholder={isListening ? "Listening..." : `Ask anything in ${language}...`}
-                className="w-full max-h-32 min-h-[56px] py-4 pl-6 pr-24 bg-transparent border-none resize-none focus:outline-none focus:ring-0 text-slate-900 dark:text-slate-100 placeholder-slate-500"
+                className="w-full max-h-32 min-h-14 py-4 pl-6 pr-24 bg-transparent border-none resize-none focus:outline-none focus:ring-0 text-slate-900 dark:text-slate-100 placeholder-slate-500"
                 rows={1}
                 disabled={isLoading}
               />

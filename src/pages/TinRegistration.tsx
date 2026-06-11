@@ -25,15 +25,23 @@ export default function TinRegistration() {
     setError('');
     
     try {
-      // Simulate API call to NRS Database
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const response = await fetch('/api/tin/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
       
-      const newTin = '2456' + Math.floor(100000 + Math.random() * 900000) + '-' + Math.floor(1000 + Math.random() * 9000);
-      setResult({ tin: newTin, phone: formData.phone });
-      toast.success('Tax Identification Number generated successfully!');
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to generate TIN. Please try again.');
+      }
+      
+      setResult({ tin: data.tin.tin, phone: formData.phone, email: formData.email, messagesSent: data.messagesSent });
+      toast.success('Registration successful! Confirmation messages sent.');
       
     } catch (err: any) {
-      setError('Network error occurred. Please try again.');
+      setError(err.message || 'Network error occurred. Please try again.');
       toast.error('Network error occurred.');
     } finally {
       setIsLoading(false);
@@ -56,7 +64,7 @@ export default function TinRegistration() {
           </div>
           
           <p className="text-sm text-gray-500 mb-6">
-            An SMS confirmation has been sent to {result.phone}. Please keep your Tax ID safe as you will need it for all future tax filings.
+            A confirmation message has been sent to <strong>{result.email}</strong> and <strong>{result.phone}</strong>. Please keep your Tax ID safe as you will need it for all future tax filings.
           </p>
           
           <button 

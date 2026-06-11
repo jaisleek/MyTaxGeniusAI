@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { FileText, CheckCircle2, Loader2, Calculator, ShieldCheck, Download, Share2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import toast from 'react-hot-toast';
 
 export default function TaxFiling() {
@@ -302,151 +302,153 @@ export default function TaxFiling() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {currentStep === 0 && (
-              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1">Tax Identification Number (Tax ID)</label>
-                    <input
-                      type="text"
-                      name="tin"
-                      required
-                      value={formData.tin}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 font-mono"
-                      placeholder="24560000-0001"
-                    />
+            <AnimatePresence mode="wait">
+              {currentStep === 0 && (
+                <motion.div key="step0" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-1">Tax Identification Number (Tax ID)</label>
+                      <input
+                        type="text"
+                        name="tin"
+                        required
+                        value={formData.tin}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 font-mono"
+                        placeholder="24560000-0001"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-gray-700 mb-1">Tax Period</label>
+                      <select
+                        name="period"
+                        value={formData.period}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 font-medium"
+                      >
+                        <option value="2025">2025</option>
+                        <option value="2024">2024 (Late Filing)</option>
+                      </select>
+                    </div>
                   </div>
+
                   <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-1">Tax Period</label>
+                    <label className="block text-sm font-bold text-gray-700 mb-1">Tax Return Type</label>
                     <select
-                      name="period"
-                      value={formData.period}
+                      name="taxType"
+                      value={formData.taxType}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 font-medium"
                     >
-                      <option value="2025">2025</option>
-                      <option value="2024">2024 (Late Filing)</option>
+                      <option value="PIT">Personal Income Tax (Freelancer/Individual)</option>
+                      <option value="CIT">Company Income Tax (Business/SME)</option>
+                      <option value="VAT">Value Added Tax (Monthly)</option>
                     </select>
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Tax Return Type</label>
-                  <select
-                    name="taxType"
-                    value={formData.taxType}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 font-medium"
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-1">Email Address for Receipt</label>
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 font-medium"
+                      placeholder="you@company.com"
+                    />
+                  </div>
+                </motion.div>
+              )}
+
+              {currentStep === 1 && (
+                <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-1">Gross Income/Turnover (₦)</label>
+                    <input
+                      type="number"
+                      name="income"
+                      required
+                      value={formData.income}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 font-bold text-xl h-16"
+                      placeholder="0.00"
+                    />
+                    <p className="text-xs text-gray-500 mt-2 font-medium">Please declare all gross income received from all sources during the tax period.</p>
+                  </div>
+                </motion.div>
+              )}
+
+              {currentStep === 2 && (
+                <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-bold text-gray-700 mb-1">Allowable Deductions (₦)</label>
+                    <input
+                      type="number"
+                      name="expenses"
+                      value={formData.expenses}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 font-bold text-xl h-16"
+                      placeholder="0.00"
+                    />
+                    <p className="text-xs text-gray-500 mt-2 font-medium">Standard deductions are automatically estimated based on your tax type (e.g., 20% + N200k CRA for PIT), but you can manually adjust this if you have exact figures.</p>
+                  </div>
+                </motion.div>
+              )}
+
+              {currentStep === 3 && (
+                <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
+                  
+                  <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200 shadow-sm space-y-3">
+                    <h3 className="text-lg font-black text-gray-900 mb-4 pb-2 border-b border-gray-200">Review Your Declaration</h3>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-500 font-medium">Tax ID</span>
+                      <span className="font-bold text-gray-900 font-mono">{formData.tin || 'N/A'}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-500 font-medium">Tax Type / Period</span>
+                      <span className="font-bold text-gray-900">{formData.taxType} / {formData.period}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-500 font-medium">Gross Income</span>
+                      <span className="font-bold text-gray-900">₦ {parseFloat(formData.income || '0').toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm pt-2 border-t border-gray-200">
+                      <span className="text-gray-900 font-extrabold">Final Computed Profit</span>
+                      <span className="font-extrabold text-green-700 text-lg">₦ {Math.max(0, (parseFloat(formData.income)||0) - (parseFloat(formData.expenses)||0)).toLocaleString()}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <input
+                      type="checkbox"
+                      name="consent"
+                      id="consent"
+                      required
+                      className="mt-1 h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                    />
+                    <label htmlFor="consent" className="ml-3 text-sm text-gray-600">
+                      I declare that the information provided is true and complete. I consent to MyTaxGenius securely transmitting this data to the Nigeria Revenue Service (NRS) via encrypted protocols in compliance with the NDPR.
+                    </label>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full bg-green-700 text-white font-extrabold py-4 rounded-xl flex justify-center items-center hover:bg-green-800 transition-colors shadow-lg disabled:opacity-50 mt-4"
                   >
-                    <option value="PIT">Personal Income Tax (Freelancer/Individual)</option>
-                    <option value="CIT">Company Income Tax (Business/SME)</option>
-                    <option value="VAT">Value Added Tax (Monthly)</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Email Address for Receipt</label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 font-medium"
-                    placeholder="you@company.com"
-                  />
-                </div>
-              </motion.div>
-            )}
-
-            {currentStep === 1 && (
-              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Gross Income/Turnover (₦)</label>
-                  <input
-                    type="number"
-                    name="income"
-                    required
-                    value={formData.income}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 font-bold text-xl h-16"
-                    placeholder="0.00"
-                  />
-                  <p className="text-xs text-gray-500 mt-2 font-medium">Please declare all gross income received from all sources during the tax period.</p>
-                </div>
-              </motion.div>
-            )}
-
-            {currentStep === 2 && (
-              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Allowable Deductions (₦)</label>
-                  <input
-                    type="number"
-                    name="expenses"
-                    value={formData.expenses}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-green-500 font-bold text-xl h-16"
-                    placeholder="0.00"
-                  />
-                  <p className="text-xs text-gray-500 mt-2 font-medium">Standard deductions are automatically estimated based on your tax type (e.g., 20% + N200k CRA for PIT), but you can manually adjust this if you have exact figures.</p>
-                </div>
-              </motion.div>
-            )}
-
-            {currentStep === 3 && (
-              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
-                
-                <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200 shadow-sm space-y-3">
-                  <h3 className="text-lg font-black text-gray-900 mb-4 pb-2 border-b border-gray-200">Review Your Declaration</h3>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500 font-medium">Tax ID</span>
-                    <span className="font-bold text-gray-900 font-mono">{formData.tin || 'N/A'}</span>
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500 font-medium">Tax Type / Period</span>
-                    <span className="font-bold text-gray-900">{formData.taxType} / {formData.period}</span>
-                  </div>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500 font-medium">Gross Income</span>
-                    <span className="font-bold text-gray-900">₦ {parseFloat(formData.income || '0').toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between items-center text-sm pt-2 border-t border-gray-200">
-                    <span className="text-gray-900 font-extrabold">Final Computed Profit</span>
-                    <span className="font-extrabold text-green-700 text-lg">₦ {Math.max(0, (parseFloat(formData.income)||0) - (parseFloat(formData.expenses)||0)).toLocaleString()}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start bg-gray-50 p-4 rounded-xl border border-gray-200">
-                  <input
-                    type="checkbox"
-                    name="consent"
-                    id="consent"
-                    required
-                    className="mt-1 h-5 w-5 rounded border-gray-300 text-green-600 focus:ring-green-500"
-                  />
-                  <label htmlFor="consent" className="ml-3 text-sm text-gray-600">
-                    I declare that the information provided is true and complete. I consent to MyTaxGenius securely transmitting this data to the Nigeria Revenue Service (NRS) via encrypted protocols in compliance with the NDPR.
-                  </label>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full bg-green-700 text-white font-extrabold py-4 rounded-xl flex justify-center items-center hover:bg-green-800 transition-colors shadow-lg disabled:opacity-50 mt-4"
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                      Transmitting to NRS Gateway...
-                    </>
-                  ) : (
-                    'File Securely via API'
-                  )}
-                </button>
-              </motion.div>
-            )}
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                        Transmitting to NRS Gateway...
+                      </>
+                    ) : (
+                      'File Securely via API'
+                    )}
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Navigation Buttons */}
             <div className="flex justify-between mt-8 pt-6 border-t border-gray-100">
