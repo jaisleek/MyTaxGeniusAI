@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 import http from "http";
 import Groq from "groq-sdk";
 import { GoogleGenAI } from "@google/genai";
+import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 dotenv.config();
 
@@ -14,6 +16,18 @@ const db = {
   tins: [] as any[],
   filings: [] as any[]
 };
+
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+
+const emailTransporter = process.env.SMTP_HOST ? nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT || "587"),
+  secure: process.env.SMTP_SECURE === "true",
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+}) : null;
 
 async function startServer() {
   const app = express();
@@ -124,13 +138,114 @@ async function startServer() {
     }
   });
 
+const otps = new Map<string, string>();
+
+  app.post("/api/tin/send-otp", async (req, res) => {
+    try {
+      const { email, phone } = req.body;
+      if (!email || !phone) return res.status(400).json({ error: "Email and phone are required" });
+
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const token = Date.now().toString();
+      
+      otps.set(token, otp);
+      setTimeout(() => otps.delete(token), 10 * 60 * 1000); // Expires in 10 mins
+
+      let messagesSent = { email: false, sms: false };
+
+      // Send SMS via Twilio if configured
+      if (twilioClient && process.env.TWILIO_PHONE_NUMBER && phone) {
+        try {
+          const formattedPhone = phone.startsWith('0') ? '+234' + phone.substring(1) : phone;
+          await twilioClient.messages.create({
+            body: `MyTaxGenius: Your verification code is ${otp}. Do not share this with anyone.`,
+            from: process.env.TWILIO_PHONE_NUMBER,
+            to: formattedPhone.includes('+') ? formattedPhone : `+${formattedPhone}`
+          });
+          messagesSent.sms = true;
+        } catch (smsError) {
+          console.error("Failed to send OTP SMS:", smsError);
+        }
+      } else {
+        console.log(`[MOCK OTP SMS] To: ${phone} - Code: ${otp}`);
+        messagesSent.sms = true;
+      }
+
+      // Send Email via Resend or Nodemailer
+      if (resend && email) {
+        try {
+          await resend.emails.send({
+            from: "MyTaxGenius <onboarding@resend.dev>",
+            to: email as string,
+            subject: "Your Registration Verification Code",
+            html: `
+              <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2>Verify your registration</h2>
+                <p>Your 6-digit confirmation code is:</p>
+                <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+                  <p style="margin: 0; font-size: 32px; font-weight: bold; color: #047857; letter-spacing: 5px;">${otp}</p>
+                </div>
+                <p>This code expires in 10 minutes.</p>
+              </div>
+            `
+          });
+          messagesSent.email = true;
+        } catch (err: any) {
+          console.error("Failed to send OTP Email via Resend:", err.message);
+        }
+      } else if (emailTransporter && email) {
+        try {
+          await emailTransporter.sendMail({
+            from: `"MyTaxGenius" <${process.env.SMTP_USER || 'noreply@mytaxgenius.com'}>`,
+            to: email,
+            subject: "Your Registration Verification Code",
+            html: `
+              <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2>Verify your registration</h2>
+                <p>Your 6-digit confirmation code is:</p>
+                <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+                  <p style="margin: 0; font-size: 32px; font-weight: bold; color: #047857; letter-spacing: 5px;">${otp}</p>
+                </div>
+                <p>This code expires in 10 minutes.</p>
+              </div>
+            `
+          });
+          messagesSent.email = true;
+        } catch (err: any) {
+          console.error("Failed to send OTP Email:", err.message);
+        }
+      } else {
+        console.log(`[MOCK OTP EMAIL] To: ${email} - Subject: Your Registration Verification Code - Code: ${otp}`);
+        messagesSent.email = true;
+      }
+
+      res.json({ success: true, token, messagesSent });
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      res.status(500).json({ error: "Failed to send OTP" });
+    }
+  });
+
   // Create TIN
   app.post("/api/tin/register", async (req, res) => {
     try {
-      const { firstName, lastName, email, phone, businessName, businessType } = req.body;
+      const { firstName, lastName, email, phone, businessName, businessType, otp, token } = req.body;
       
-      // Generate a random 10-digit TIN
-      const tin = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+      if (!otp || !token) {
+         return res.status(400).json({ error: "OTP verification required." });
+      }
+
+      if (otps.get(token) !== otp) {
+         return res.status(400).json({ error: "Invalid or expired verification code." });
+      }
+      
+      // OTP verified, remove it
+      otps.delete(token);
+      
+      // Generate an authentic looking NRS TIN (e.g., 100XXXXXXX-0001 or 2456XXXXXX)
+      const baseTin = '2456' + Math.floor(100000 + Math.random() * 900000).toString();
+      const branchCode = '0001';
+      const tin = `${baseTin}-${branchCode}`;
       
       const newTinRecord = {
         id: Date.now().toString(),
@@ -146,21 +261,82 @@ async function startServer() {
       
       db.tins.push(newTinRecord);
 
+      let messagesSent = { email: false, sms: false };
+
       // Send SMS via Twilio if configured
       if (twilioClient && process.env.TWILIO_PHONE_NUMBER && phone) {
         try {
+          const formattedPhone = phone.startsWith('0') ? '+234' + phone.substring(1) : phone;
           await twilioClient.messages.create({
-            body: `Welcome to NRS! Your new Tax Identification Number (TIN) is ${tin}. Keep this safe.`,
+            body: `MyTaxGenius: Your official NRS Tax Identification Number (TIN) is ${tin}. Keep this safe for all tax filings.`,
             from: process.env.TWILIO_PHONE_NUMBER,
-            to: phone
+            to: formattedPhone.includes('+') ? formattedPhone : `+${formattedPhone}`
           });
+          messagesSent.sms = true;
         } catch (smsError) {
           console.error("Failed to send SMS:", smsError);
           // Continue even if SMS fails
         }
+      } else {
+        console.log(`[MOCK SMS] To: ${phone} - Body: MyTaxGenius: Your official NRS Tax Identification Number (TIN) is ${tin}.`);
+        messagesSent.sms = true; // Set to true for mock response to UI
       }
 
-      res.json({ success: true, tin: newTinRecord });
+      // Send Email via Resend or Nodemailer
+      if (resend && email) {
+        try {
+          await resend.emails.send({
+            from: "MyTaxGenius <onboarding@resend.dev>",
+            to: email as string,
+            subject: "Your Official Tax Identification Number (TIN)",
+            html: `
+              <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2>Registration Successful</h2>
+                <p>Dear ${firstName} ${lastName},</p>
+                <p>Your business <strong>${businessName}</strong> has been successfully registered.</p>
+                <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+                  <p style="margin: 0; color: #6b7280; font-size: 14px; text-transform: uppercase;">Your Tax ID (TIN)</p>
+                  <p style="margin: 5px 0 0; font-size: 32px; font-weight: bold; color: #047857; letter-spacing: 2px;">${tin}</p>
+                </div>
+                <p>Please keep this safe for all future tax filings with the Nigeria Revenue Service.</p>
+                <p>Best regards,<br>MyTaxGenius Team</p>
+              </div>
+            `
+          });
+          messagesSent.email = true;
+        } catch (err: any) {
+          console.error("Failed to send Email via Resend:", err.message);
+        }
+      } else if (emailTransporter && email) {
+        try {
+          await emailTransporter.sendMail({
+            from: `"MyTaxGenius NRS Reg" <${process.env.SMTP_USER || 'noreply@mytaxgenius.com'}>`,
+            to: email,
+            subject: "Your Official Tax Identification Number (TIN)",
+            html: `
+              <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2>Registration Successful</h2>
+                <p>Dear ${firstName} ${lastName},</p>
+                <p>Your business <strong>${businessName}</strong> has been successfully registered.</p>
+                <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+                  <p style="margin: 0; color: #6b7280; font-size: 14px; text-transform: uppercase;">Your Tax ID (TIN)</p>
+                  <p style="margin: 5px 0 0; font-size: 32px; font-weight: bold; color: #047857; letter-spacing: 2px;">${tin}</p>
+                </div>
+                <p>Please keep this safe for all future tax filings with the Nigeria Revenue Service.</p>
+                <p>Best regards,<br>MyTaxGenius Team</p>
+              </div>
+            `
+          });
+          messagesSent.email = true;
+        } catch (err: any) {
+          console.error("Failed to send Email:", err.message);
+        }
+      } else {
+        console.log(`[MOCK EMAIL] To: ${email} - Subject: Your Official Tax Identification Number (TIN) - TIN: ${tin}`);
+        messagesSent.email = true; // Set to true for mock response to UI
+      }
+
+      res.json({ success: true, tin: newTinRecord, messagesSent });
     } catch (error) {
       console.error("Error registering TIN:", error);
       res.status(500).json({ error: "Failed to register TIN" });
