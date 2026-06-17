@@ -190,7 +190,7 @@ export default function NearestOfficeMap() {
           <div className="bg-slate-50 dark:bg-slate-800/50 rounded-[2rem] p-8 border border-slate-200 dark:border-slate-700 h-full flex flex-col items-center justify-center relative">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-extrabold text-slate-800 dark:text-white">Interactive Map</h3>
-              <p className="text-slate-600 dark:text-slate-400 mt-2">Click on any state to locate the FIRS or NRS branches in that area.</p>
+              <p className="text-slate-600 dark:text-slate-400 mt-2">Click on any state to locate the NRS or NRS branches in that area.</p>
             </div>
             <NigeriaSvgMap onStateClick={setSelectedState} />
             {selectedState && (
@@ -218,13 +218,13 @@ export default function NearestOfficeMap() {
                     <div className="space-y-4">
                       <div className="p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
                         <div className="flex items-start justify-between">
-                          <div className="font-bold text-slate-800 dark:text-slate-100 text-lg">{selectedState} Federal Inland Revenue Service (FIRS)</div>
-                          <span className="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded font-bold uppercase tracking-wide">FIRS</span>
+                          <div className="font-bold text-slate-800 dark:text-slate-100 text-lg">{selectedState} Nigeria Revenue Service (NRS)</div>
+                          <span className="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded font-bold uppercase tracking-wide">NRS</span>
                         </div>
                         <div className="mt-3 space-y-2">
                           <div className="flex items-start text-sm text-slate-600 dark:text-slate-300">
                             <MapPinIcon className="w-4 h-4 mr-2 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                            <span>No. 1 FIRS Road, Federal Secretariat Complex, {selectedState} Capital City, {selectedState} State</span>
+                            <span>No. 1 NRS Road, Federal Secretariat Complex, {selectedState} Capital City, {selectedState} State</span>
                           </div>
                           <div className="flex items-center text-sm text-slate-600 dark:text-slate-300">
                             <div className="w-4 h-4 mr-2 text-emerald-600 dark:text-emerald-400 shrink-0 flex items-center justify-center">
@@ -236,7 +236,7 @@ export default function NearestOfficeMap() {
                              <div className="w-4 h-4 mr-2 text-emerald-600 dark:text-emerald-400 shrink-0 flex items-center justify-center">
                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                              </div>
-                             <span>0800 FIRS {selectedState.substring(0,3).toUpperCase()} / +234 800 000 0000</span>
+                             <span>0800 NRS {selectedState.substring(0,3).toUpperCase()} / +234 800 000 0000</span>
                           </div>
                         </div>
                       </div>
@@ -284,7 +284,7 @@ export default function NearestOfficeMap() {
         <div className="bg-slate-50 dark:bg-slate-800/50 rounded-[2rem] p-8 border border-slate-200 dark:border-slate-700 h-full flex flex-col items-center justify-center relative">
           <div className="text-center mb-6">
             <h3 className="text-2xl font-extrabold text-slate-800 dark:text-white">Interactive Map</h3>
-            <p className="text-slate-600 dark:text-slate-400 mt-2">Click on any state to locate the FIRS or NRS branches in that area.</p>
+            <p className="text-slate-600 dark:text-slate-400 mt-2">Click on any state to locate the NRS or NRS branches in that area.</p>
           </div>
           <NigeriaSvgMap onStateClick={setSelectedState} />
           {selectedState && (
