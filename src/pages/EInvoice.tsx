@@ -132,9 +132,9 @@ export default function EInvoice() {
         <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
           <Receipt className="w-8 h-8" />
         </div>
-        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">NRS Compliant E-Invoicing</h1>
+        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">B2B E-Invoicing & Rev360 Reconciliation</h1>
         <p className="mt-2 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto font-medium">
-          Create professional invoices that automatically calculate the mandatory 7.5% VAT. 
+          Create professional B2B invoices that automatically track accounts receivable, reconcile with the new Rev360 platform, and calculate the mandatory 7.5% VAT. 
           Keep your business compliant without the hassle.
         </p>
 
@@ -195,7 +195,7 @@ export default function EInvoice() {
                   value={item.description}
                   onChange={(e) => updateItem(item.id, 'description', e.target.value)}
                   placeholder="Item description"
-                  className="flex-grow px-3 py-2 rounded-lg border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-green-500 text-sm transition-colors duration-300"
+                  className="grow px-3 py-2 rounded-lg border border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-green-500 text-sm transition-colors duration-300"
                 />
                 <input 
                   type="number" 
@@ -253,7 +253,7 @@ export default function EInvoice() {
               <p className="text-gray-600">{customerEmail || 'email@company.com'}</p>
             </div>
 
-            <div className="flex-grow">
+            <div className="grow">
               <table className="w-full text-left text-sm">
                 <thead>
                   <tr className="border-b-2 border-gray-900 text-gray-900">

@@ -60,14 +60,14 @@ export default function Layout() {
     { name: 'Expense Tracker', path: '/expenses' },
     { name: 'Get Tax ID', path: '/tin' },
     { name: 'File Returns', path: '/file-tax' },
-    { name: 'E-Invoice', path: '/invoice' },
+    { name: 'B2B E-Invoicing', path: '/invoice' },
     { name: 'Information Hub', path: '/info' }
   ] : [
     { name: 'Check Tax', path: '/calculator' },
     { name: 'Track Money', path: '/expenses' },
     { name: 'Get Tax ID (TIN)', path: '/tin' },
     { name: 'Pay Tax', path: '/file-tax' },
-    { name: 'E-Invoice', path: '/invoice' },
+    { name: 'B2B E-Invoicing', path: '/invoice' },
     { name: 'Info Hub', path: '/info' }
   ];
 
@@ -256,7 +256,7 @@ export default function Layout() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -15 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="flex-grow pt-[140px] lg:pt-[160px]"
+          className="grow pt-35 lg:pt-40"
         >
           <Outlet />
         </motion.main>
