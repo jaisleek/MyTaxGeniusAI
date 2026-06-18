@@ -57,7 +57,7 @@ async function startServer() {
 
   app.get("/api/tax-updates", async (req, res) => {
     const fallbackUpdates = [
-      "- FIRS Extends Deadline for Corporate Tax Returns Setup by 30 days.",
+      "- NRS Extends Deadline for Corporate Tax Returns Setup by 30 days.",
       "- New VAT Exemption List Published for Basic Educational and Food Items.",
       "- NRS Introduces Digital Portal for Seamless E-Invoicing Tracking.",
       "- Penalty Waivers Available for SMEs Filing Before the Next Quarter."

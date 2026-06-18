@@ -209,7 +209,7 @@ export default function TaxFiling() {
           className="bg-white px-8 pb-8 pt-4 rounded-b-3xl -mt-4 shadow-sm border border-t-0 border-green-100 text-center relative z-0"
         >
           <p className="text-sm text-gray-500 mb-6 max-w-md mx-auto">
-            An official email receipt has been sent to your registered address. Please proceed to make your payment directly on the official Federal Inland Revenue Service (FIRS) / NRS portal.
+            An official email receipt has been sent to your registered address. Please proceed to make your payment directly on the official Nigeria Revenue Service (NRS) / NRS portal.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">

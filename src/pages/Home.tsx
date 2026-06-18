@@ -10,6 +10,7 @@ import { TaxCalendarSystem } from '../components/TaxCalendarSystem';
 import { QuickTaxCalculator } from '../components/QuickTaxCalculator';
 import { TaxFAQ } from '../components/TaxFAQ';
 import { TaxUpdatesFeed } from '../components/TaxUpdatesFeed';
+import { TaxTipsCarousel } from '../components/TaxTipsCarousel';
 import NearestOfficeMap from '../components/NearestOfficeMap';
 
 function cn(...inputs: (string | undefined | null | false)[]) {
@@ -31,10 +32,10 @@ const Home = () => {
   const takeHome = typeof calcSalary === 'number' ? (calcSalary - Number(estimatedTax)).toFixed(0) : '0';
 
   return (
-    <div className="flex flex-col bg-[#FAFAFA] dark:bg-slate-950 transition-colors duration-300 overflow-hidden -mt-[140px] lg:-mt-[160px]">
+    <div className="flex flex-col bg-[#FAFAFA] dark:bg-slate-950 transition-colors duration-300 overflow-hidden -mt-35 lg:-mt-35">
       
       {/* 🚀 SUPERCHARGED HERO SECTION (Fintech Premium Vibe) */}
-      <section className="relative overflow-hidden bg-[#0F172A] pt-40 pb-28 md:pt-[220px] md:pb-40">
+      <section className="relative overflow-hidden bg-[#0F172A] pt-40 pb-28 md:pt-55 md:pb-40">
         
         {/* Animated Grid & Glow Background */}
         <div className="absolute inset-0 z-0 bg-[#0F172A]">
@@ -48,12 +49,12 @@ const Home = () => {
         <motion.div 
           animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-gradient-to-r from-fuchsia-600 via-purple-600 to-indigo-600 rounded-full blur-[120px] pointer-events-none z-0 mix-blend-screen"
+          className="absolute top-[-20%] right-[-10%] w-150 h-150 bg-linear-to-r from-fuchsia-600 via-purple-600 to-indigo-600 rounded-full blur-[120px] pointer-events-none z-0 mix-blend-screen"
         ></motion.div>
         <motion.div 
           animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-600 rounded-full blur-[120px] pointer-events-none z-0 mix-blend-screen"
+          className="absolute bottom-[-20%] left-[-10%] w-150 h-150 bg-linear-to-r from-emerald-600 via-teal-500 to-cyan-600 rounded-full blur-[120px] pointer-events-none z-0 mix-blend-screen"
         ></motion.div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -68,7 +69,7 @@ const Home = () => {
             >
               <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-fuchsia-500/10 to-emerald-500/10 border border-fuchsia-500/20 text-fuchsia-300 font-bold mb-4 shadow-[0_0_20px_rgba(217,70,239,0.15)]">
                 <span className="flex h-2 w-2 rounded-full bg-fuchsia-500 mr-2 animate-pulse"></span>
-                Authorized src/components/NearestOfficeMap.tsx Tax Bridge
+                Authorized NRS Tax Bridge
               </div>
               <h1 className="text-5xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1]">
                 Tax no <br/>
@@ -118,6 +119,10 @@ const Home = () => {
                     📰 Tax News & Blog
                   </a>
                 </div>
+                
+                <div className="w-full mt-6">
+                  <TaxTipsCarousel />
+                </div>
               </motion.div>
             </motion.div>
 
@@ -134,17 +139,17 @@ const Home = () => {
                 className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg mx-auto"
               >
                 {/* Decorative background glow behind the image */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-fuchsia-500/20 rounded-full blur-3xl transform scale-110"></div>
+                <div className="absolute inset-0 bg-linear-to-tr from-emerald-500/20 to-fuchsia-500/20 rounded-full blur-3xl transform scale-110"></div>
                 
                 {/* The Main Hero Image */}
-                <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.6)]">
+                <div className="relative aspect-4/5 rounded-4xl overflow-hidden border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.6)]">
                    <img 
                       src="https://images.unsplash.com/photo-1589156280159-27698a70f29e?q=80&w=1200&auto=format&fit=crop" 
                       alt="Confident Nigerian Business Professional" 
                       className="w-full h-full object-cover object-center"
                    />
                    {/* Gradient overlay to blend the bottom edge smoothly */}
-                   <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0F172A] to-transparent"></div>
+                   <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-[#0F172A] to-transparent"></div>
                 </div>
 
                 {/* Floating Widget 1: Fast Resolution */}
@@ -218,17 +223,17 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-slate-900 p-10 rounded-[2rem] border border-slate-200/60 dark:border-slate-800/60 text-center shadow-lg shadow-emerald-900/5">
+            <div className="bg-white dark:bg-slate-900 p-10 rounded-4xl border border-slate-200/60 dark:border-slate-800/60 text-center shadow-lg shadow-emerald-900/5">
               <div className="text-4xl md:text-5xl font-black text-emerald-600 dark:text-emerald-400 mb-2">99.9%</div>
               <p className="text-slate-800 dark:text-slate-200 font-extrabold text-lg mb-1">API Reliability</p>
               <p className="text-sm text-slate-500 dark:text-slate-400">Stable infrastructure for accounting & financial integrations.</p>
             </div>
-            <div className="bg-white dark:bg-slate-900 p-10 rounded-[2rem] border border-slate-200/60 dark:border-slate-800/60 text-center shadow-lg shadow-blue-900/5">
+            <div className="bg-white dark:bg-slate-900 p-10 rounded-4xl border border-slate-200/60 dark:border-slate-800/60 text-center shadow-lg shadow-blue-900/5">
               <div className="text-4xl md:text-5xl font-black text-blue-600 dark:text-blue-400 mb-2">~1 Min</div>
               <p className="text-slate-800 dark:text-slate-200 font-extrabold text-lg mb-1">Average Resolution</p>
               <p className="text-sm text-slate-500 dark:text-slate-400">Contextual answers delivered via massive, localized NLP models.</p>
             </div>
-            <div className="bg-white dark:bg-slate-900 p-10 rounded-[2rem] border border-slate-200/60 dark:border-slate-800/60 text-center shadow-lg shadow-fuchsia-900/5">
+            <div className="bg-white dark:bg-slate-900 p-10 rounded-4xl border border-slate-200/60 dark:border-slate-800/60 text-center shadow-lg shadow-fuchsia-900/5">
               <div className="text-4xl md:text-5xl font-black text-fuchsia-600 dark:text-fuchsia-400 mb-2">Zero</div>
               <p className="text-slate-800 dark:text-slate-200 font-extrabold text-lg mb-1">Data Breaches</p>
               <p className="text-sm text-slate-500 dark:text-slate-400">Architected with Bank-grade (AES-256) data isolation natively.</p>
@@ -251,7 +256,7 @@ const Home = () => {
         >
           {/* Row 1, Col 1 */}
           <motion.div className="md:col-span-1 lg:col-span-1" variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } } }}>
-            <Link to="/chat" className="group bg-white dark:bg-slate-900 rounded-[2rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-[280px]">
+            <Link to="/chat" className="group bg-white dark:bg-slate-900 rounded-4xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-70">
               <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform shadow-inner">
                 <MessageSquare className="w-8 h-8" />
               </div>
@@ -264,7 +269,7 @@ const Home = () => {
 
           {/* Row 1, Col 2: Tax Calculator */}
           <motion.div className="md:col-span-1 lg:col-span-1" variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } } }}>
-            <Link to="/calculator" className="group bg-white dark:bg-slate-900 rounded-[2rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-[280px]">
+            <Link to="/calculator" className="group bg-white dark:bg-slate-900 rounded-4xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-70">
               <div className="w-16 h-16 bg-amber-50 dark:bg-amber-900/30 rounded-2xl flex items-center justify-center text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform shadow-inner">
                 <CalculatorIcon className="w-8 h-8" />
               </div>
@@ -277,7 +282,7 @@ const Home = () => {
 
           {/* Row 1, Col 3: 2025 Reforms */}
           <motion.div className="md:col-span-1 lg:col-span-1" variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } } }}>
-            <Link to="/reforms" className="group bg-white dark:bg-slate-900 rounded-[2rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-[280px]">
+            <Link to="/reforms" className="group bg-white dark:bg-slate-900 rounded-4xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-70">
                <div className="w-16 h-16 bg-rose-50 dark:bg-rose-900/30 rounded-2xl flex items-center justify-center text-rose-600 dark:text-rose-400 group-hover:scale-110 transition-transform shadow-inner">
                  <Zap className="w-8 h-8" />
                </div>
@@ -293,7 +298,7 @@ const Home = () => {
 
           {/* Row 2, Col 1: Get Your Tax ID */}
           <motion.div className="md:col-span-1 lg:col-span-1" variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } } }}>
-            <Link to="/tin" className="group bg-white dark:bg-slate-900 rounded-[2rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-[280px]">
+            <Link to="/tin" className="group bg-white dark:bg-slate-900 rounded-4xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-70">
               <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform shadow-inner">
                 <Building2 className="w-8 h-8" />
               </div>
@@ -306,7 +311,7 @@ const Home = () => {
 
           {/* Row 2, Col 2: Expense Tracker (Under Tax Calculator) */}
           <motion.div className="md:col-span-1 lg:col-span-1" variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } } }}>
-            <Link to="/expenses" className="group bg-white dark:bg-slate-900 rounded-[2rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-[280px]">
+            <Link to="/expenses" className="group bg-white dark:bg-slate-900 rounded-4xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-70">
               <div className="w-16 h-16 bg-cyan-50 dark:bg-cyan-900/30 rounded-2xl flex items-center justify-center text-cyan-600 dark:text-cyan-400 group-hover:scale-110 transition-transform shadow-inner">
                 <Receipt className="w-8 h-8" />
               </div>
@@ -322,7 +327,7 @@ const Home = () => {
 
           {/* Row 2, Col 3: File Returns */}
           <motion.div className="md:col-span-1 lg:col-span-1" variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } } }}>
-            <Link to="/file-tax" className="group bg-white dark:bg-slate-900 rounded-[2rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-[280px]">
+            <Link to="/file-tax" className="group bg-white dark:bg-slate-900 rounded-4xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between h-70">
               <div className="w-16 h-16 bg-purple-50 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform shadow-inner">
                 <FileText className="w-8 h-8" />
               </div>
@@ -368,7 +373,7 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="relative z-10 flex-shrink-0 flex justify-center">
+              <div className="relative z-10 shrink-0 flex justify-center">
                 <div className="w-32 h-32 md:w-40 md:h-40 bg-white/20 backdrop-blur-md rounded-full border-4 border-white/30 flex items-center justify-center shadow-2xl relative">
                   <div className="absolute inset-0 rounded-full bg-white/20 animate-ping"></div>
                   <MessageSquare className="w-16 h-16 md:w-20 md:h-20 text-white relative z-10 group-hover:scale-110 transition-transform duration-300" />
@@ -379,7 +384,7 @@ const Home = () => {
 
           {/* Row 3: Information Hub */}
           <motion.div className="md:col-span-2 lg:col-span-3" variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } } }}>
-            <Link to="/info" className="group bg-white dark:bg-slate-900 rounded-[2rem] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row items-start md:items-center justify-between h-auto">
+            <Link to="/info" className="group bg-white dark:bg-slate-900 rounded-4xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 dark:border-slate-800 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row items-start md:items-center justify-between h-auto">
               <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
                 <div className="w-16 h-16 bg-orange-50 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:scale-110 transition-transform shadow-inner shrink-0">
                   <BookOpen className="w-8 h-8" />
@@ -397,7 +402,7 @@ const Home = () => {
 
           {/* Tax Accountant Full-Width Banner */}
           <motion.div className="md:col-span-2 lg:col-span-3" variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } } }}>
-            <Link to="/accountant-portal" className="relative overflow-hidden group bg-gradient-to-r from-indigo-700 via-indigo-600 to-blue-500 rounded-[2rem] p-8 md:p-12 shadow-[0_20px_50px_rgba(79,70,229,0.3)] flex flex-col md:flex-row items-center justify-between border border-indigo-500/50 transition-transform hover:-translate-y-1 duration-300">
+            <Link to="/accountant-portal" className="relative overflow-hidden group bg-linear-to-r from-indigo-700 via-indigo-600 to-blue-500 rounded-4xl p-8 md:p-12 shadow-[0_20px_50px_rgba(79,70,229,0.3)] flex flex-col md:flex-row items-center justify-between border border-indigo-500/50 transition-transform hover:-translate-y-1 duration-300">
               
               {/* Decorative Background Elements */}
               <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-colors duration-700"></div>
@@ -421,7 +426,7 @@ const Home = () => {
                 </div>
               </div>
 
-              <div className="relative z-10 flex-shrink-0 flex justify-center">
+              <div className="relative z-10 shrink-0 flex justify-center">
                 <div className="w-32 h-32 md:w-40 md:h-40 bg-white/10 backdrop-blur-md rounded-full border-4 border-white/30 flex items-center justify-center shadow-2xl relative">
                   {/* Pulse effect */}
                   <div className="absolute inset-0 rounded-full bg-white/20 animate-ping"></div>
@@ -436,12 +441,12 @@ const Home = () => {
       {/* 🚀 ACCOUNTANTS & SME SECTION (Dark Glassmorphism Card) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24 mt-8 relative z-20">
         <div className="bg-[#0F172A] rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-slate-800">
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-br from-fuchsia-500/20 via-purple-500/20 to-cyan-500/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-emerald-500/10 to-blue-500/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4 pointer-events-none"></div>
+          <div className="absolute top-0 right-0 w-200 h-200 bg-linear-to-br from-fuchsia-500/20 via-purple-500/20 to-cyan-500/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+          <div className="absolute bottom-0 left-0 w-150 h-150 bg-linear-to-tr from-emerald-500/10 to-blue-500/10 rounded-full blur-[100px] translate-y-1/3 -translate-x-1/4 pointer-events-none"></div>
           
           <div className="relative p-10 lg:p-16 flex flex-col lg:flex-row items-center gap-16">
             <div className="flex-1 space-y-8">
-              <div className="inline-flex items-center bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 text-cyan-300 text-[11px] font-black px-4 py-2 rounded-full uppercase tracking-widest shadow-sm">
+              <div className="inline-flex items-center bg-linear-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 text-cyan-300 text-[11px] font-black px-4 py-2 rounded-full uppercase tracking-widest shadow-sm">
                 <Briefcase className="w-3.5 h-3.5 mr-2" /> For Startups & SMEs
               </div>
               <h2 className="text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.15]">
@@ -464,7 +469,7 @@ const Home = () => {
               </ul>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                <Link to="/invoice" className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold hover:from-cyan-400 hover:to-blue-500 transition-colors shadow-[0_8px_25px_rgba(6,182,212,0.25)] text-center flex items-center justify-center">
+                <Link to="/invoice" className="bg-linear-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-2xl font-bold hover:from-cyan-400 hover:to-blue-500 transition-colors shadow-[0_8px_25px_rgba(6,182,212,0.25)] text-center flex items-center justify-center">
                   Create E-Invoice <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
                 <Link to="/sme-onboarding" className="bg-white/5 border border-white/10 text-white px-8 py-4 rounded-2xl font-bold hover:bg-white/10 transition-colors text-center backdrop-blur-sm">
@@ -476,8 +481,8 @@ const Home = () => {
             {/* Visual element for SME */}
             <div className="flex-1 w-full hidden lg:block">
               <div className="relative p-6">
-                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-blue-500/20 rounded-3xl transform rotate-3 scale-105 blur-md"></div>
-                <div className="bg-[#1E293B] border border-white/10 rounded-[2rem] p-8 relative shadow-2xl backdrop-blur-xl">
+                <div className="absolute inset-0 bg-linear-to-tr from-emerald-500/20 to-blue-500/20 rounded-3xl transform rotate-3 scale-105 blur-md"></div>
+                <div className="bg-[#1E293B] border border-white/10 rounded-4xl p-8 relative shadow-2xl backdrop-blur-xl">
                   <div className="flex items-center justify-between border-b border-white/5 pb-5 mb-5">
                     <h3 className="font-extrabold text-white text-xl">Tax Health Score</h3>
                     <span className="text-emerald-400 font-bold bg-emerald-500/10 px-4 py-1.5 rounded-full text-sm">Excellent</span>
@@ -494,7 +499,7 @@ const Home = () => {
                     <div className="pt-2">
                        <span className="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2 block">Quarterly Compliance</span>
                        <div className="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
-                         <div className="bg-gradient-to-r from-emerald-500 to-emerald-300 w-3/4 h-full rounded-full"></div>
+                         <div className="bg-linear-to-r from-emerald-500 to-emerald-300 w-3/4 h-full rounded-full"></div>
                        </div>
                     </div>
                   </div>
@@ -518,33 +523,33 @@ const Home = () => {
 
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
             {/* NRS Vision */}
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-200 dark:border-slate-800 transition-colors duration-300">
+            <div className="bg-slate-50 dark:bg-slate-900 rounded-4xl p-8 border border-slate-200 dark:border-slate-800 transition-colors duration-300">
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center">
                 <Building2 className="w-8 h-8 text-slate-400 dark:text-slate-500 mr-3" />
                 Nigeria Revenue Service (NRS) Vision
               </h3>
               <ul className="space-y-5">
                 <li className="flex items-start">
-                  <CheckCircle className="text-slate-400 dark:text-slate-500 mr-3 mt-0.5 font-bold w-5 h-5 flex-shrink-0" />
+                  <CheckCircle className="text-slate-400 dark:text-slate-500 mr-3 mt-0.5 font-bold w-5 h-5 shrink-0" />
                   <span className="text-slate-600 dark:text-slate-400 font-medium">Expand the national tax net to include the informal sector.</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="text-slate-400 dark:text-slate-500 mr-3 mt-0.5 font-bold w-5 h-5 flex-shrink-0" />
+                  <CheckCircle className="text-slate-400 dark:text-slate-500 mr-3 mt-0.5 font-bold w-5 h-5 shrink-0" />
                   <span className="text-slate-600 dark:text-slate-400 font-medium">Digitalize and automate tax remittance for total transparency.</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="text-slate-400 dark:text-slate-500 mr-3 mt-0.5 font-bold w-5 h-5 flex-shrink-0" />
+                  <CheckCircle className="text-slate-400 dark:text-slate-500 mr-3 mt-0.5 font-bold w-5 h-5 shrink-0" />
                   <span className="text-slate-600 dark:text-slate-400 font-medium">Educate citizens on the real benefits of national tax compliance.</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="text-slate-400 dark:text-slate-500 mr-3 mt-0.5 font-bold w-5 h-5 flex-shrink-0" />
+                  <CheckCircle className="text-slate-400 dark:text-slate-500 mr-3 mt-0.5 font-bold w-5 h-5 shrink-0" />
                   <span className="text-slate-600 dark:text-slate-400 font-medium">Eliminate localized "multiple taxation" and illegal extortions.</span>
                 </li>
               </ul>
             </div>
 
             {/* MyTaxGenius Bridge */}
-            <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-[2rem] p-8 border border-emerald-200 dark:border-emerald-800 shadow-[0_8px_30px_rgb(16,185,129,0.1)] relative">
+            <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-4xl p-8 border border-emerald-200 dark:border-emerald-800 shadow-[0_8px_30px_rgb(16,185,129,0.1)] relative">
               <div className="absolute -top-4 -right-4 bg-emerald-500 text-white font-black text-xs px-4 py-2 rounded-full shadow-lg transform rotate-6">
                 WORLD CLASS PARTNER
               </div>
@@ -554,19 +559,19 @@ const Home = () => {
               </h3>
               <ul className="space-y-5">
                 <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-emerald-500 dark:text-emerald-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-emerald-500 dark:text-emerald-500 mr-3 mt-0.5 shrink-0" />
                   <span className="text-emerald-900 dark:text-emerald-200 font-medium">Translating NRS policies to Pidgin, Yoruba, Hausa & Igbo via AI.</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-emerald-500 dark:text-emerald-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-emerald-500 dark:text-emerald-500 mr-3 mt-0.5 shrink-0" />
                   <span className="text-emerald-900 dark:text-emerald-200 font-medium">Securely linking individual taxpayers directly to the JTB databases.</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-emerald-500 dark:text-emerald-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-emerald-500 dark:text-emerald-500 mr-3 mt-0.5 shrink-0" />
                   <span className="text-emerald-900 dark:text-emerald-200 font-medium">Standardizing SME accounting with built-in 7.5% E-Invoicing.</span>
                 </li>
                 <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-emerald-500 dark:text-emerald-500 mr-3 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-emerald-500 dark:text-emerald-500 mr-3 mt-0.5 shrink-0" />
                   <span className="text-emerald-900 dark:text-emerald-200 font-medium">Providing Certified Professionals to ensure flawless ledger reviews.</span>
                 </li>
               </ul>
@@ -672,7 +677,7 @@ const Home = () => {
             ].map((faq, index) => (
               <div key={index} className="bg-[#FAFAFA] rounded-2xl p-6 md:p-8 border border-slate-100 hover:border-emerald-200 hover:shadow-lg transition-all duration-300 group">
                 <h3 className="text-xl font-extrabold text-slate-900 mb-3 flex items-start">
-                  <HelpCircle className="w-6 h-6 text-emerald-500 mr-3 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" /> 
+                  <HelpCircle className="w-6 h-6 text-emerald-500 mr-3 shrink-0 mt-0.5 group-hover:scale-110 transition-transform" /> 
                   {faq.q}
                 </h3>
                 <p className="text-slate-600 font-medium leading-relaxed md:pl-9">{faq.a}</p>
@@ -760,12 +765,12 @@ const Home = () => {
       {/* 🚀 CONTACT MODAL */}
       <AnimatePresence>
         {isContactModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+          <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white dark:bg-slate-900 rounded-[2rem] w-full max-w-lg shadow-2xl overflow-hidden"
+              className="bg-white dark:bg-slate-900 rounded-4xl w-full max-w-lg shadow-2xl overflow-hidden"
             >
               <div className="p-6 md:p-8 relative">
                 <button 

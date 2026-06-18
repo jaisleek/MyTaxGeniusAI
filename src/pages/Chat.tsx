@@ -458,8 +458,8 @@ CRITICAL FORMATTING & BEHAVIOR RULES:
 3. Use **bold text** to highlight key financial terms, categories, and metrics.
 4. Use clear bullet points (-) or numbered lists (1. 2.) to break down steps. keep it concise.
 5. Use ### Headings when shifting to a new major point.
-6. INCLUDE RELEVANT LINKS (CRITICAL): When suggesting tax payments or compliance steps, you MUST ALWAYS provide verified, clickable links to official sources (like FIRS or State Internal Revenue Service portals):
-   - Federal Inland Revenue Service (FIRS) / TaxPro Max: [taxpromax.firs.gov.ng](https://taxpromax.firs.gov.ng/)
+6. INCLUDE RELEVANT LINKS (CRITICAL): When suggesting tax payments or compliance steps, you MUST ALWAYS provide verified, clickable links to official sources (like NRS or State Internal Revenue Service portals):
+   - Nigeria Revenue Service (NRS) / TaxPro Max: [taxpromax.firs.gov.ng](https://taxpromax.firs.gov.ng/)
    - Lagos State Internal Revenue Service (LIRS) eTax: [etax.lirs.net](https://etax.lirs.net/)
    - Remita Payment Portal: [remita.net](https://remita.net/)
    - MyTaxGenius Dashboard: [Dashboard](/dashboard)
@@ -870,7 +870,7 @@ ${taxKnowledgeBase}
                   }
                 }}
                 placeholder={isListening ? "Listening..." : `Ask anything in ${language}...`}
-                className="w-full max-h-32 min-h-14 py-4 pl-6 pr-24 bg-transparent border-none resize-none focus:outline-none focus:ring-0 text-slate-900 dark:text-slate-100 placeholder-slate-500"
+                className="w-full max-h-32 min-h14 py-4 pl-6 pr-24 bg-transparent border-none resize-none focus:outline-none focus:ring-0 text-slate-900 dark:text-slate-100 placeholder-slate-500"
                 rows={1}
                 disabled={isLoading}
               />
